@@ -1,0 +1,103 @@
+{
+  "unit": {
+    "id": "01JD0UNIT00000000000000DB",
+    "title": "Wohnung Dünenblick"
+  },
+  "arrival": "2027-07-01",
+  "departure": "2027-07-04",
+  "nights": 3,
+  "guests": {
+    "adults": 2,
+    "children": 2,
+    "infants": 0,
+    "pets": 1
+  },
+  "currency": "EUR",
+  "lines": [
+    {
+      "type": "Stay",
+      "title": "Hauptsaison",
+      "season": {
+        "id": "01JD0SEASON0000000000MAIN",
+        "title": "Hauptsaison",
+        "from": "2027-06-01",
+        "to": "2027-08-31"
+      },
+      "quantity": 3,
+      "unitPrice": {
+        "net": "168.2200",
+        "gross": "180.0000",
+        "taxRate": "7.00"
+      },
+      "totals": {
+        "net": 50467,
+        "tax": 3533,
+        "gross": 54000
+      },
+      "taxRate": "7.00",
+      "includes": []
+    },
+    {
+      "type": "ExtraGuests",
+      "title": "Weitere Gäste",
+      "quantity": 6,
+      "unitPrice": {
+        "net": "18.6900",
+        "gross": "20.0000",
+        "taxRate": "7.00"
+      },
+      "totals": {
+        "net": 11215,
+        "tax": 785,
+        "gross": 12000
+      },
+      "taxRate": "7.00",
+      "includes": []
+    },
+    {
+      "type": "Pets",
+      "title": "Hund",
+      "quantity": 3,
+      "unitPrice": {
+        "net": "8.4000",
+        "gross": "10.0000",
+        "taxRate": "19.00"
+      },
+      "totals": {
+        "net": 2521,
+        "tax": 479,
+        "gross": 3000
+      },
+      "taxRate": "19.00",
+      "includes": []
+    },
+    {
+      "type": "Fee",
+      "title": "Nebenkosten",
+      "quantity": 1,
+      "unitPrice": {
+        "net": "140.1900",
+        "gross": "150.0000",
+        "taxRate": "7.00"
+      },
+      "totals": {
+        "net": 14019,
+        "tax": 981,
+        "gross": 15000
+      },
+      "taxRate": "7.00",
+      "includes": [
+        "Bettwäsche",
+        "Handtücher",
+        "Endreinigung"
+      ]
+    }
+  ],
+  "totals": {
+    "net": 78222,
+    "tax": 5778,
+    "gross": 84000
+  },
+  "valid": true,
+  "problems": []
+}

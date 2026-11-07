@@ -1,0 +1,16 @@
+{
+  "property": {
+    "id": "01JD0PROPERTY0000000000HD",
+    "title": "Haus Dohlennest"
+  },
+  "currency": "EUR",
+  "legal": [
+    {
+      "key": "Privacy",
+      "title": "Datenschutzerklärung",
+      "version": "2027-01",
+      "url": "https://dohlennest.example/datenschutz",
+      "required": true
+    }
+  ]
+}

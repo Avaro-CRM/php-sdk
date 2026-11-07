@@ -10,6 +10,7 @@ namespace Avaro\Sdk;
 
 use Avaro\Sdk\Auth\Auth;
 use Avaro\Sdk\Auth\Credentials;
+use Avaro\Sdk\Hotel\Hotel;
 use Avaro\Sdk\Http\Transport;
 use Avaro\Sdk\Invoices\Invoices;
 use Avaro\Sdk\Orders\Orders;
@@ -25,6 +26,7 @@ use Psr\Http\Message\StreamFactoryInterface;
  *     $products = $avaro->shop()->products()->list(limit: 20);
  *     $login = $avaro->auth()->customers()->login($email, $password);
  *     $orders = $avaro->withCustomer($login->token)->orders()->list();
+ *     $quote = $avaro->hotel()->quotes()->create(new Stay($arrival, $departure, new Guests(2), $unitId));
  *
  * Immutable: withCustomer() returns a new client for calls on behalf of
  * a signed-in contact.
@@ -78,6 +80,14 @@ final class Avaro
     public function shop(): Shop
     {
         return new Shop($this->transport, $this->customerToken);
+    }
+
+    /**
+     * Holiday apartments or rooms of a hotel channel; needs no customer.
+     */
+    public function hotel(): Hotel
+    {
+        return new Hotel($this->transport);
     }
 
     public function orders(): Orders

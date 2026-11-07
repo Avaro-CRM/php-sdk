@@ -1,0 +1,24 @@
+{
+  "id": "01JD0BOOKING000000000000A",
+  "number": "B-2027-0042",
+  "status": "Requested",
+  "unit": {
+    "id": "01JD0UNIT00000000000000DB",
+    "title": "Wohnung Dünenblick"
+  },
+  "arrival": "2027-07-01",
+  "departure": "2027-07-04",
+  "guests": {
+    "adults": 2,
+    "children": 2,
+    "infants": 0,
+    "pets": 1
+  },
+  "currency": "EUR",
+  "totals": {
+    "net": 78222,
+    "tax": 5778,
+    "gross": 84000
+  },
+  "createdAt": "2027-05-10T12:00:00Z"
+}

@@ -1,0 +1,79 @@
+{
+  "data": [
+    {
+      "id": "01JD0UNIT00000000000000DB",
+      "title": "Wohnung Dünenblick",
+      "property": {
+        "id": "01JD0PROPERTY0000000000HD",
+        "title": "Haus Dohlennest"
+      },
+      "maxGuests": 4,
+      "maxInfants": 1,
+      "maxPets": 1,
+      "minNights": 1,
+      "currency": "EUR",
+      "rates": [
+        {
+          "season": null,
+          "pricePerNight": {
+            "net": "102.8000",
+            "gross": "110.0000",
+            "taxRate": "7.00"
+          },
+          "guestsIncluded": 2,
+          "extraGuestPrice": {
+            "net": "18.6900",
+            "gross": "20.0000",
+            "taxRate": "7.00"
+          },
+          "minNights": 1
+        },
+        {
+          "season": {
+            "id": "01JD0SEASON0000000000MAIN",
+            "title": "Hauptsaison",
+            "from": "2027-06-01",
+            "to": "2027-08-31"
+          },
+          "pricePerNight": {
+            "net": "168.2200",
+            "gross": "180.0000",
+            "taxRate": "7.00"
+          },
+          "guestsIncluded": 2,
+          "extraGuestPrice": {
+            "net": "18.6900",
+            "gross": "20.0000",
+            "taxRate": "7.00"
+          },
+          "minNights": 3
+        }
+      ],
+      "pets": {
+        "pricePerNight": {
+          "net": "8.4000",
+          "gross": "10.0000",
+          "taxRate": "19.00"
+        },
+        "note": "Hund auf Anfrage"
+      },
+      "fees": [
+        {
+          "key": "fees",
+          "title": "Nebenkosten",
+          "price": {
+            "net": "140.1900",
+            "gross": "150.0000",
+            "taxRate": "7.00"
+          },
+          "includes": [
+            "Bettwäsche",
+            "Handtücher",
+            "Endreinigung"
+          ]
+        }
+      ]
+    }
+  ],
+  "next": "cursor-2"
+}

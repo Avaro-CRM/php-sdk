@@ -1,9 +1,9 @@
 {
     "name": "avaro/sdk",
-    "description": "PHP SDK for the Avaro API v3: shop catalog, customer sign-in, quotes, orders and invoices",
+    "description": "PHP SDK for the Avaro API v3: shop catalog, customer sign-in, quotes, orders, invoices and hotel booking requests",
     "type": "library",
     "license": "MIT",
-    "keywords": ["avaro", "api", "sdk", "shop", "b2b", "psr-18"],
+    "keywords": ["avaro", "api", "sdk", "shop", "b2b", "hotel", "psr-18"],
     "homepage": "https://github.com/Avaro-CRM/php-sdk",
     "authors": [
         {"name": "Jan Habbo Brüning", "homepage": "https://avaro.de"}

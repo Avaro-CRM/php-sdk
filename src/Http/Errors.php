@@ -24,6 +24,7 @@ use Avaro\Sdk\Exception\TotalChanged;
 use Avaro\Sdk\Exception\Unauthorized;
 use Avaro\Sdk\Exception\UnexpectedResponse;
 use Avaro\Sdk\Exception\ValidationFailed;
+use Avaro\Sdk\Hotel\Quote as StayQuote;
 use Avaro\Sdk\Model\Data;
 use Avaro\Sdk\Shop\Quote;
 use Throwable;
@@ -77,19 +78,27 @@ final class Errors
     private static function conflict(Problem $problem, Data $data): Conflict
     {
         $quote = null;
+        $stayQuote = null;
 
         try {
             $quoteData = $data->optData('quote');
-            $quote = null === $quoteData ? null : Quote::fromData($quoteData);
+
+            // A quote of a stay has nights, one of the shop goods.
+            if (null !== $quoteData && $quoteData->has('nights')) {
+                $stayQuote = StayQuote::fromData($quoteData);
+            } elseif (null !== $quoteData) {
+                $quote = Quote::fromData($quoteData);
+            }
         } catch (Throwable) {
             $quote = null;
+            $stayQuote = null;
         }
 
         return match ($problem->slug()) {
-            'total-changed' => new TotalChanged($problem, $quote),
-            'quote-invalid' => new QuoteInvalid($problem, $quote),
-            'idempotency-conflict' => new IdempotencyConflict($problem, $quote),
-            default => new Conflict($problem, $quote),
+            'total-changed' => new TotalChanged($problem, $quote, $stayQuote),
+            'quote-invalid' => new QuoteInvalid($problem, $quote, $stayQuote),
+            'idempotency-conflict' => new IdempotencyConflict($problem, $quote, $stayQuote),
+            default => new Conflict($problem, $quote, $stayQuote),
         };
     }
 

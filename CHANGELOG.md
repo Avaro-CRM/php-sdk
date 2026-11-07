@@ -8,6 +8,9 @@ version per version of the API.
 
 ### Added
 
+- `hotel()`: channel, units with rates, pets and fees, calendar per
+  unit, availability, quotes and booking requests with idempotency key;
+  `stayQuote` on conflicts of a request.
 - `tags` of a product and a product summary, e.g. `startseite`.
 
 - Client `Avaro` for API v3 over PSR-18 and PSR-17 with `ApiKey`,

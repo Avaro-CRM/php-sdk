@@ -1,0 +1,45 @@
+{
+  "unit": {
+    "id": "01JD0UNIT00000000000000DB",
+    "title": "Wohnung Dünenblick"
+  },
+  "from": "2027-07-09",
+  "to": "2027-07-15",
+  "days": [
+    {
+      "date": "2027-07-09",
+      "status": "Free",
+      "arrival": false,
+      "departure": true,
+      "minNights": 3
+    },
+    {
+      "date": "2027-07-10",
+      "status": "DepartureOnly",
+      "arrival": false,
+      "departure": true,
+      "minNights": 3
+    },
+    {
+      "date": "2027-07-11",
+      "status": "Booked",
+      "arrival": false,
+      "departure": false,
+      "minNights": 3
+    },
+    {
+      "date": "2027-07-14",
+      "status": "ArrivalOnly",
+      "arrival": true,
+      "departure": false,
+      "minNights": 3
+    },
+    {
+      "date": "2027-07-15",
+      "status": "Waitlist",
+      "arrival": false,
+      "departure": false,
+      "minNights": 3
+    }
+  ]
+}

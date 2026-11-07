@@ -40,6 +40,13 @@ final class ContractTest extends Base
         ['GET', '/orders/orders/{order}', 'orders'],
         ['GET', '/invoices/invoices', 'invoices'],
         ['GET', '/invoices/invoices/{invoice}/pdf', 'invoices'],
+        ['GET', '/hotel/channel', 'hotel'],
+        ['GET', '/hotel/units', 'hotel'],
+        ['GET', '/hotel/units/{unit}', 'hotel'],
+        ['GET', '/hotel/units/{unit}/calendar', 'hotel'],
+        ['GET', '/hotel/availability', 'hotel'],
+        ['POST', '/hotel/quotes', 'hotel'],
+        ['POST', '/hotel/requests', 'hotel'],
     ];
 
     /** Fixtures and the schema they follow. */
@@ -50,6 +57,11 @@ final class ContractTest extends Base
         'order-summary' => 'orders.yaml#/components/schemas/OrderSummary',
         'order' => 'orders.yaml#/components/schemas/Order',
         'customer' => 'auth.yaml#/components/schemas/Customer',
+        'hotel-channel' => 'hotel.yaml#/components/schemas/Channel',
+        'hotel-unit' => 'hotel.yaml#/components/schemas/Unit',
+        'hotel-calendar' => 'hotel.yaml#/components/schemas/Calendar',
+        'hotel-quote' => 'hotel.yaml#/components/schemas/Quote',
+        'hotel-request' => 'hotel.yaml#/components/schemas/BookingRequestSummary',
     ];
 
     /** @var array<string, array<mixed>> */

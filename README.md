@@ -113,6 +113,36 @@ $store->savePosition($page->until);
 A position that is too old throws `Exception\Gone`; sync again without
 `since` then.
 
+## Holiday apartments and hotels
+
+A client with `hotel.catalog:read` and `hotel.requests:write` shows the
+units of one property with their rates, a calendar, quotes and sends
+booking requests. The tenant confirms or declines them in Avaro.
+
+```php
+use Avaro\Sdk\Hotel\BookingRequest;
+use Avaro\Sdk\Hotel\Consent;
+use Avaro\Sdk\Hotel\Guest;
+use Avaro\Sdk\Hotel\Guests;
+use Avaro\Sdk\Hotel\Stay;
+
+$hotel = $avaro->hotel();
+$unit = $hotel->units()->get($unitId);           // rates, pets, fees
+$days = $hotel->units()->calendar($unitId, $from, $to)->days;
+$stay = new Stay($arrival, $departure, new Guests(adults: 2, children: 1, pets: 1), $unitId);
+$quote = $hotel->quotes()->create($stay);        // lines, totals, problems
+$free = $hotel->availability(new Stay($arrival, $departure, new Guests(2)));
+
+try {
+    $sent = $hotel->requests()->send(
+        new BookingRequest($stay, new Guest('Janssen', 'greta@example.com'), $quote->totals->gross, [Consent::to($privacy)]),
+        $idempotencyKey,
+    );
+} catch (\Avaro\Sdk\Exception\TotalChanged | \Avaro\Sdk\Exception\QuoteInvalid $error) {
+    $quote = $error->stayQuote; // show it again
+}
+```
+
 ## Errors
 
 Every error is an `Exception\AvaroException`. Answers of the API are
@@ -124,7 +154,7 @@ Every error is an `Exception\AvaroException`. Answers of the API are
 | 401 | `Unauthorized` |
 | 403 | `Forbidden` |
 | 404 | `NotFound` |
-| 409 | `Conflict`, `TotalChanged`, `QuoteInvalid`, `IdempotencyConflict` (with `quote`) |
+| 409 | `Conflict`, `TotalChanged`, `QuoteInvalid`, `IdempotencyConflict` (with `quote` of the shop or `stayQuote` of a stay) |
 | 410 | `Gone` |
 | 422 | `ValidationFailed` (`errors`, `messages()`) |
 | 429 | `TooManyRequests` (`retryAfter`) |
