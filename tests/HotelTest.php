@@ -67,7 +67,8 @@ final class HotelTest extends TestCase
         $this->http->fixture('hotel-unit')->fixture('hotel-calendar')->answer(404, ['type' => 'https://app.avaro.test/rest/v3/problems/not-found', 'title' => 'Not found', 'status' => 404]);
         $units = $this->avaro()->hotel()->units();
 
-        self::assertSame('Wohnung Dünenblick', $units->get('01JD0UNIT00000000000000DB')->title);
+        $unit = $units->get('01JD0UNIT00000000000000DB');
+        self::assertSame(['Wohnung Dünenblick', '12'], [$unit->title, $unit->code]);
 
         $calendar = $units->calendar('01JD0UNIT00000000000000DB', new DateTimeImmutable('2027-07-09'), new DateTimeImmutable('2027-07-15'));
         self::assertSame('https://app.avaro.test/rest/v3/hotel/units/01JD0UNIT00000000000000DB/calendar?from=2027-07-09&to=2027-07-15', (string) $this->http->last()->getUri());

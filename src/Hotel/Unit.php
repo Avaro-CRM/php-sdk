@@ -33,6 +33,8 @@ final class Unit
         public readonly array $rates,
         public readonly ?PetPrice $pets,
         public readonly array $fees,
+        /** Short code in Avaro, e.g. the ID in the system the unit came from. */
+        public readonly ?string $code = null,
     ) {}
 
     public static function fromData(Data $data): self
@@ -51,6 +53,7 @@ final class Unit
             array_map(Rate::fromData(...), $data->list('rates')),
             null === $pets ? null : PetPrice::fromData($pets),
             array_map(Fee::fromData(...), $data->list('fees')),
+            $data->optString('code'),
         );
     }
 
