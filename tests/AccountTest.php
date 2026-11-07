@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace Avaro\Sdk\Tests;
 
+use Avaro\Sdk\Auth\PersonalApproach;
 use Avaro\Sdk\Exception\TooManyRequests;
 use Avaro\Sdk\Exception\Unauthorized;
 
@@ -25,6 +26,7 @@ final class AccountTest extends TestCase
         self::assertSame(['email' => 'erika@example.test', 'password' => 'geheim-geheim'], $this->http->lastJson());
         self::assertSame('avc_abc', $login->token);
         self::assertSame('10001', $login->customer->customerNumber);
+        self::assertSame(PersonalApproach::ByYou, $login->customer->personalApproach);
         self::assertSame('a1', $login->customer->billingAddress?->id);
         self::assertCount(2, $login->customer->deliveryAddresses);
 

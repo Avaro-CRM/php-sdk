@@ -13,6 +13,8 @@ version per version of the API.
   expires, optional `TokenStore`) and `BearerToken`.
 - `auth()->customers()`: sign-in, sign-out, profile, password and
   password reset of contacts; `withCustomer($token)` for their calls.
+- `Customer::$personalApproach`: how the contact wants to be addressed,
+  `ByThem` (formal) or `ByYou` (informal).
 - `shop()`: channel, categories, products with prices for a customer,
   catalog changes for a sync, quotes and orders with idempotency key.
 - `orders()` and `invoices()` of the signed-in customer, invoices as PDF.

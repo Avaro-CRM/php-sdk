@@ -28,6 +28,7 @@ final class Customer
         public readonly ?string $vatId,
         public readonly ?Address $billingAddress,
         public readonly array $deliveryAddresses,
+        public readonly PersonalApproach $personalApproach = PersonalApproach::ByThem,
     ) {}
 
     public static function fromData(Data $data): self
@@ -43,6 +44,8 @@ final class Customer
             $data->optString('vatId'),
             null === $billing ? null : Address::fromData($billing),
             array_map(Address::fromData(...), $data->list('deliveryAddresses')),
+            // Formal when the server is older or sends something new.
+            PersonalApproach::tryFrom((string) $data->optString('personalApproach')) ?? PersonalApproach::ByThem,
         );
     }
 }
