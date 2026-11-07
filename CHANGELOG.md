@@ -8,6 +8,8 @@ version per version of the API.
 
 ### Added
 
+- `tags` of a product and a product summary, e.g. `startseite`.
+
 - Client `Avaro` for API v3 over PSR-18 and PSR-17 with `ApiKey`,
   `BasicAuth`, `ClientCredentials` (token kept until shortly before it
   expires, optional `TokenStore`) and `BearerToken`.

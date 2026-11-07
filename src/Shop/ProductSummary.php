@@ -17,6 +17,7 @@ final class ProductSummary
 {
     /**
      * @param list<string> $categories IDs
+     * @param list<string> $tags       Tags of the product, e.g. "startseite"
      */
     public function __construct(
         public readonly string $id,
@@ -29,6 +30,7 @@ final class ProductSummary
         public readonly ?Image $image,
         public readonly Availability $availability,
         public readonly ?CustomerPrice $price,
+        public readonly array $tags = [],
     ) {}
 
     public static function fromData(Data $data): self
@@ -47,6 +49,7 @@ final class ProductSummary
             null === $image ? null : Image::fromData($image),
             Availability::fromData($data->data('availability')),
             null === $price ? null : CustomerPrice::fromData($price),
+            $data->strings('tags'),
         );
     }
 }

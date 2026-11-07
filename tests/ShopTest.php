@@ -96,6 +96,7 @@ final class ShopTest extends TestCase
         self::assertSame(6, $product->quantityStep);
         self::assertCount(2, $product->images);
         self::assertSame('Blüte', $product->images[1]->alt);
+        self::assertSame(['startseite'], $product->tags);
         self::assertSame('2026-11-06T09:30:00+00:00', $product->updatedAt?->format(\DATE_ATOM));
 
         $this->expectException(NotFound::class);

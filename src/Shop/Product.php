@@ -18,6 +18,7 @@ final class Product
 {
     /**
      * @param list<string> $categories IDs
+     * @param list<string> $tags       Tags of the product, e.g. "startseite"
      * @param list<Image>  $images
      */
     public function __construct(
@@ -37,6 +38,7 @@ final class Product
         public readonly int|float $minQuantity,
         public readonly int|float $quantityStep,
         public readonly ?DateTimeImmutable $updatedAt,
+        public readonly array $tags = [],
     ) {}
 
     public static function fromData(Data $data): self
@@ -61,6 +63,7 @@ final class Product
             $data->number('minQuantity'),
             $data->number('quantityStep'),
             $data->optDateTime('updatedAt'),
+            $data->strings('tags'),
         );
     }
 }

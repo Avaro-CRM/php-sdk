@@ -1,6 +1,6 @@
 {
     "id": "123", "slug": "echinocactus-grusonii-123", "sku": "K-123", "gtin": null,
-    "title": "Echinocactus grusonii", "shortDescription": null, "categories": ["c2"],
+    "title": "Echinocactus grusonii", "shortDescription": null, "categories": ["c2"], "tags": ["startseite"],
     "image": {"id": "i1", "url": "https://app.avaro.test/files/i1?t=x", "width": null, "height": null, "alt": null, "version": "7"},
     "availability": {"status": "LowStock", "orderable": true, "deliveryTime": null},
     "description": "<p>Ein <b>schöner</b> Kaktus.</p>",
