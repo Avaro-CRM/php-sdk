@@ -1,0 +1,9 @@
+{
+    "id": "17", "name": "Erika Muster", "email": "erika@example.test", "customerNumber": "10001",
+    "company": "Gärtnerei Muster", "vatId": "DE123456789",
+    "billingAddress": {"id": "a1", "name": "Gärtnerei Muster", "company": "Gärtnerei Muster", "addition": null, "street": "Gartenweg 1", "postalCode": "12345", "city": "Blumenstadt", "country": "DE"},
+    "deliveryAddresses": [
+        {"id": "a1", "name": "Gärtnerei Muster", "company": "Gärtnerei Muster", "addition": null, "street": "Gartenweg 1", "postalCode": "12345", "city": "Blumenstadt", "country": "DE"},
+        {"id": "a2", "name": "Lager", "company": null, "addition": null, "street": "Hof 2", "postalCode": "12345", "city": "Blumenstadt", "country": "DE"}
+    ]
+}

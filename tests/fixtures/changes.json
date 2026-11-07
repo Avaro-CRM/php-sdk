@@ -1,0 +1,9 @@
+{
+    "data": [
+        {"type": "Category", "id": "c1", "change": "Updated", "changedAt": "2026-11-06T09:00:00Z"},
+        {"type": "Product", "id": "123", "change": "Updated", "changedAt": "2026-11-06T09:30:00Z"},
+        {"type": "Product", "id": "99", "change": "Deleted", "changedAt": "2026-11-06T09:31:00Z"}
+    ],
+    "next": null,
+    "until": "pos-42"
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Kakteen Berghaus",
+    "currency": "EUR",
+    "priceDisplay": "Net",
+    "catalogPublic": true,
+    "paymentMethods": [{"key": "Invoice", "title": "Rechnung"}],
+    "minimumOrder": {"net": 15000},
+    "legal": [
+        {"key": "Terms", "title": "AGB", "version": "2026-10-01", "url": "https://example.test/agb", "required": true},
+        {"key": "Privacy", "title": "Datenschutz", "version": "2026-09-01", "url": "https://example.test/datenschutz"}
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "id": "01JC90A1B2C3D4E5F6G7H8J9K0", "number": "A-2026-0815", "status": "Open", "currency": "EUR",
+    "total": {"net": 14940, "tax": 1046, "gross": 15986}, "reference": null, "createdAt": "2026-11-07T10:00:00Z",
+    "lines": [
+        {"productId": "123", "sku": "K-123", "title": "Echinocactus grusonii", "quantity": 12,
+         "unit": {"net": "12.4500", "gross": "13.3215", "taxRate": "7.00"}, "total": {"net": 14940, "tax": 1046, "gross": 15986}}
+    ],
+    "goods": {"net": 14940, "tax": 1046, "gross": 15986},
+    "shipping": {"net": 0, "tax": 0, "gross": 0},
+    "shippingMethod": "OwnDelivery",
+    "paymentMethod": "Invoice",
+    "comment": null,
+    "billingAddress": {"name": "Erika Muster", "company": "Gärtnerei Muster", "addition": null, "street": "Gartenweg 1", "postalCode": "12345", "city": "Blumenstadt", "country": "DE"},
+    "deliveryAddress": {"name": null, "company": "Gärtnerei Muster", "addition": "Lager", "street": "Hof 2", "postalCode": "12345", "city": "Blumenstadt", "country": null},
+    "invoiceIds": ["inv-1"]
+}

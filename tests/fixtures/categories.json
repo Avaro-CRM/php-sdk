@@ -1,0 +1,11 @@
+{
+    "data": [
+        {
+            "id": "c1", "slug": "kakteen", "title": "Kakteen", "description": "Stachelig", "image": null,
+            "children": [
+                {"id": "c2", "slug": "echinocactus", "title": "Echinocactus", "children": []}
+            ]
+        },
+        {"id": "c3", "slug": "zubehoer", "title": "Zubehör", "description": null, "image": {"id": "i9", "url": "https://app.avaro.test/files/i9?t=x", "width": 800, "height": 600, "alt": null, "version": "3"}, "children": []}
+    ]
+}

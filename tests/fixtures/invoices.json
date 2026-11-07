@@ -1,0 +1,7 @@
+{
+    "data": [
+        {"id": "inv-1", "number": "R-2026-01234", "kind": "Invoice", "status": "Open", "currency": "EUR",
+         "total": {"net": 14940, "tax": 1046, "gross": 15986}, "date": "2026-11-08", "dueDate": "2026-11-22", "orderIds": ["01JC90A1B2C3D4E5F6G7H8J9K0"]}
+    ],
+    "next": "c2"
+}
