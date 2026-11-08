@@ -8,6 +8,11 @@ version per version of the API.
 
 ### Added
 
+- `events()`: channel with legal texts and required details, categories
+  with price and attendee limits, upcoming events with free seats,
+  booking status and fields, and bookings for one or more attendees with
+  idempotency key; `SoldOut` and `NotBookable`, and `event` on conflicts
+  of a booking.
 - `hotel()`: channel, units with rates, pets and fees, calendar per
   unit, availability, quotes and booking requests with idempotency key;
   `stayQuote` on conflicts of a request.

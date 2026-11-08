@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace Avaro\Sdk\Exception;
 
 /**
- * The total of an order or request changed; quote (shop) or stayQuote
- * (hotel) is the new one.
+ * The total of an order, request or booking changed; quote (shop),
+ * stayQuote (hotel) or event (events) shows the new price.
  */
 final class TotalChanged extends Conflict {}

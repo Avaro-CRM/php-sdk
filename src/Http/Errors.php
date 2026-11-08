@@ -15,15 +15,18 @@ use Avaro\Sdk\Exception\FieldError;
 use Avaro\Sdk\Exception\Forbidden;
 use Avaro\Sdk\Exception\Gone;
 use Avaro\Sdk\Exception\IdempotencyConflict;
+use Avaro\Sdk\Exception\NotBookable;
 use Avaro\Sdk\Exception\NotFound;
 use Avaro\Sdk\Exception\Problem;
 use Avaro\Sdk\Exception\QuoteInvalid;
 use Avaro\Sdk\Exception\ServerError;
+use Avaro\Sdk\Exception\SoldOut;
 use Avaro\Sdk\Exception\TooManyRequests;
 use Avaro\Sdk\Exception\TotalChanged;
 use Avaro\Sdk\Exception\Unauthorized;
 use Avaro\Sdk\Exception\UnexpectedResponse;
 use Avaro\Sdk\Exception\ValidationFailed;
+use Avaro\Sdk\Events\Event;
 use Avaro\Sdk\Hotel\Quote as StayQuote;
 use Avaro\Sdk\Model\Data;
 use Avaro\Sdk\Shop\Quote;
@@ -94,11 +97,20 @@ final class Errors
             $stayQuote = null;
         }
 
+        try {
+            $eventData = $data->optData('event');
+            $event = null === $eventData ? null : Event::fromData($eventData);
+        } catch (Throwable) {
+            $event = null;
+        }
+
         return match ($problem->slug()) {
-            'total-changed' => new TotalChanged($problem, $quote, $stayQuote),
+            'total-changed' => new TotalChanged($problem, $quote, $stayQuote, $event),
             'quote-invalid' => new QuoteInvalid($problem, $quote, $stayQuote),
+            'sold-out' => new SoldOut($problem, event: $event),
+            'not-bookable' => new NotBookable($problem, event: $event),
             'idempotency-conflict' => new IdempotencyConflict($problem, $quote, $stayQuote),
-            default => new Conflict($problem, $quote, $stayQuote),
+            default => new Conflict($problem, $quote, $stayQuote, $event),
         };
     }
 

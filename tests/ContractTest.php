@@ -47,6 +47,12 @@ final class ContractTest extends Base
         ['GET', '/hotel/availability', 'hotel'],
         ['POST', '/hotel/quotes', 'hotel'],
         ['POST', '/hotel/requests', 'hotel'],
+        ['GET', '/events/channel', 'events'],
+        ['GET', '/events/categories', 'events'],
+        ['GET', '/events/categories/{category}', 'events'],
+        ['GET', '/events/events', 'events'],
+        ['GET', '/events/events/{event}', 'events'],
+        ['POST', '/events/bookings', 'events'],
     ];
 
     /** Fixtures and the schema they follow. */
@@ -62,6 +68,10 @@ final class ContractTest extends Base
         'hotel-calendar' => 'hotel.yaml#/components/schemas/Calendar',
         'hotel-quote' => 'hotel.yaml#/components/schemas/Quote',
         'hotel-request' => 'hotel.yaml#/components/schemas/BookingRequestSummary',
+        'events-channel' => 'events.yaml#/components/schemas/Channel',
+        'events-category' => 'events.yaml#/components/schemas/Category',
+        'events-event' => 'events.yaml#/components/schemas/Event',
+        'events-booking' => 'events.yaml#/components/schemas/BookingSummary',
     ];
 
     /** @var array<string, array<mixed>> */

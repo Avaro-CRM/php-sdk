@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "id": "2",
+      "title": "Erste Hilfe",
+      "subtitle": "Grundkurs",
+      "parent": null,
+      "currency": "EUR",
+      "price": {
+        "net": "33.6134",
+        "gross": "40.0000",
+        "taxRate": "19.00"
+      },
+      "attendantsMin": 4,
+      "attendantsMax": 20
+    },
+    {
+      "id": "4",
+      "title": "Erste Hilfe im Betrieb",
+      "subtitle": null,
+      "parent": "2",
+      "currency": "EUR",
+      "price": null,
+      "attendantsMin": null,
+      "attendantsMax": 12
+    }
+  ],
+  "next": "cursor-2"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "5f2b8c0d9a1e4b7c8d6e3f2a1b0c9d8e",
+  "number": "B-2027-0042",
+  "status": "Booked",
+  "event": {
+    "id": "10",
+    "title": "Erste Hilfe",
+    "startsAt": "2027-06-01T07:00:00Z"
+  },
+  "attendees": 2,
+  "currency": "EUR",
+  "totals": {
+    "net": 6723,
+    "tax": 1277,
+    "gross": 8000
+  },
+  "createdAt": "2027-05-10T12:00:00Z"
+}

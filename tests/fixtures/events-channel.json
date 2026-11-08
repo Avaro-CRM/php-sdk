@@ -1,0 +1,27 @@
+{
+  "currency": "EUR",
+  "legal": [
+    {
+      "key": "Terms",
+      "title": "AGB",
+      "version": "2027-01",
+      "url": "https://erste-hilfe.example/agb",
+      "text": null,
+      "required": true
+    },
+    {
+      "key": "Cancellation",
+      "title": "Abmeldung",
+      "version": "2027-01",
+      "url": null,
+      "text": "Abmeldung bis 48 Stunden vorher, sonst volle Gebühr.",
+      "required": false
+    }
+  ],
+  "requiredDetails": [
+    "Address",
+    "DateOfBirth",
+    "ShoeSize"
+  ],
+  "maxAttendees": 3
+}

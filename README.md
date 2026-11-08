@@ -143,6 +143,46 @@ try {
 }
 ```
 
+## Courses and events
+
+A client with `events.catalog:read` and `events.bookings:write` shows
+courses (categories with a price per attendee and attendee limits),
+their upcoming events with free seats and books them for one or more
+attendees. Avaro stores the booking and sends the confirmation and, as
+set for the tenant, the invoice.
+
+```php
+use Avaro\Sdk\Events\Attendee;
+use Avaro\Sdk\Events\Booking;
+use Avaro\Sdk\Events\Consent;
+use Avaro\Sdk\Events\Customer;
+use Avaro\Sdk\Events\RequiredDetail;
+
+$events = $avaro->events();
+$channel = $events->channel();                   // legal texts, required details, maxAttendees
+$course = $events->categories()->get($courseId); // price, attendantsMin, attendantsMax
+$dates = $events->events()->list(category: $courseId, available: true);
+$event = $events->events()->get($eventId);       // seats, booking status, fields
+
+if ($event->bookable(2)) {
+    try {
+        $sent = $events->bookings()->book(Booking::of(
+            $event,
+            new Customer('Weber', 'anna@example.com', 'Anna', street: 'Kreuzweg', houseNumber: '3', postalCode: '52062', city: 'Aachen'),
+            [new Attendee('Jonas', 'Weber', $birthday), new Attendee('Mia', 'Weber')],
+            ['costs-by-company' => true],          // by the key of $event->fields
+            [Consent::to($channel->legal[0])],
+        ), $idempotencyKey);
+    } catch (\Avaro\Sdk\Exception\SoldOut | \Avaro\Sdk\Exception\NotBookable | \Avaro\Sdk\Exception\TotalChanged $error) {
+        $event = $error->event; // show it again
+    }
+}
+```
+
+`Booking::of()` sends the total Avaro checks: the gross price per
+attendee times the attendees. A status or field type the SDK does not
+know never counts as bookable.
+
 ## Errors
 
 Every error is an `Exception\AvaroException`. Answers of the API are
@@ -154,7 +194,7 @@ Every error is an `Exception\AvaroException`. Answers of the API are
 | 401 | `Unauthorized` |
 | 403 | `Forbidden` |
 | 404 | `NotFound` |
-| 409 | `Conflict`, `TotalChanged`, `QuoteInvalid`, `IdempotencyConflict` (with `quote` of the shop or `stayQuote` of a stay) |
+| 409 | `Conflict`, `TotalChanged`, `QuoteInvalid`, `SoldOut`, `NotBookable`, `IdempotencyConflict` (with `quote` of the shop, `stayQuote` of a stay or `event` of a booking) |
 | 410 | `Gone` |
 | 422 | `ValidationFailed` (`errors`, `messages()`) |
 | 429 | `TooManyRequests` (`retryAfter`) |
