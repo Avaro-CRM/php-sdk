@@ -53,6 +53,7 @@ final class ContractTest extends Base
         ['GET', '/events/events', 'events'],
         ['GET', '/events/events/{event}', 'events'],
         ['POST', '/events/bookings', 'events'],
+        ['GET', '/events/attendees', 'events'],
     ];
 
     /** Fixtures and the schema they follow. */
@@ -72,6 +73,7 @@ final class ContractTest extends Base
         'events-category' => 'events.yaml#/components/schemas/Category',
         'events-event' => 'events.yaml#/components/schemas/Event',
         'events-booking' => 'events.yaml#/components/schemas/BookingSummary',
+        'events-event-attendees' => 'events.yaml#/components/schemas/EventAttendees',
     ];
 
     /** @var array<string, array<mixed>> */

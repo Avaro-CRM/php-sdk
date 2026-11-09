@@ -46,6 +46,24 @@ final class EventsTest extends TestCase
         self::assertSame('Abmeldung bis 48 Stunden vorher, sonst volle Gebühr.', $channel->legal[1]->text);
     }
 
+    public function testTheAttendeesOfEvents(): void
+    {
+        $one = Fixtures::load('events-event-attendees');
+        $this->http->answer(200, ['data' => [$one]])->answer(200, ['data' => []]);
+
+        $lists = $this->avaro()->events()->attendees(['1410', ...array_map('strval', range(1, 50))]);
+
+        self::assertSame('https://app.avaro.test/rest/v3/events/attendees?events=50', urldecode((string) $this->http->last()->getUri()), 'More than 50 events take a second call.');
+        self::assertCount(1, $lists);
+        self::assertSame('1410', $lists[0]->event->id);
+        self::assertSame(['Kim', 'Weber'], [$lists[0]->attendees[0]->firstName, $lists[0]->attendees[0]->lastName]);
+        self::assertSame('2026-11-02T13:30:00+00:00', $lists[0]->attendees[0]->bookedAt?->format(DATE_ATOM));
+        self::assertNull($lists[0]->attendees[1]->bookedAt);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->avaro()->events()->attendees([]);
+    }
+
     public function testCategoriesWithTheirDefaults(): void
     {
         $last = Fixtures::load('events-categories');

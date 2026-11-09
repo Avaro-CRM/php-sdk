@@ -1,0 +1,7 @@
+{
+  "event": { "id": "1410", "title": "LANFER Erste Hilfe", "startsAt": "2026-12-05T08:00:00Z" },
+  "attendees": [
+    { "firstName": "Kim", "lastName": "Weber", "bookedAt": "2026-11-02T13:30:00Z" },
+    { "firstName": "Jonas", "lastName": "Berg", "bookedAt": null }
+  ]
+}
