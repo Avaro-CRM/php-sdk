@@ -19,6 +19,7 @@ use Avaro\Sdk\Hotel\DayStatus;
 use Avaro\Sdk\Hotel\Guest;
 use Avaro\Sdk\Hotel\Guests;
 use Avaro\Sdk\Hotel\LineType;
+use Avaro\Sdk\Hotel\RequiredDetail;
 use Avaro\Sdk\Hotel\Salutation;
 use Avaro\Sdk\Hotel\Stay;
 use Avaro\Sdk\Tests\Support\Fixtures;
@@ -37,6 +38,18 @@ final class HotelTest extends TestCase
         self::assertSame('Haus Dohlennest', $channel->property->title);
         self::assertSame('Privacy', $channel->legal[0]->key);
         self::assertTrue($channel->legal[0]->required);
+        self::assertSame([RequiredDetail::Address, RequiredDetail::Phone], $channel->requiredDetails, 'Unknown details are left out.');
+        self::assertTrue($channel->requires(RequiredDetail::Phone));
+        self::assertFalse($channel->requires(RequiredDetail::FirstName));
+    }
+
+    public function testAChannelOfAnOlderAvaroRequiresNothingMore(): void
+    {
+        $data = Fixtures::load('hotel-channel');
+        unset($data['requiredDetails']);
+        $this->http->answer(200, $data);
+
+        self::assertSame([], $this->avaro()->hotel()->channel()->requiredDetails);
     }
 
     public function testUnitsWithRatesPetsAndFees(): void

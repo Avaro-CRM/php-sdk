@@ -13,7 +13,7 @@ version per version of the API.
   booking status and fields, and bookings for one or more attendees with
   idempotency key; `SoldOut` and `NotBookable`, and `event` on conflicts
   of a booking.
-- `hotel()`: channel, units with rates, pets and fees, calendar per
+- `hotel()`: channel with legal texts and required details, units with rates, pets and fees, calendar per
   unit, availability, quotes and booking requests with idempotency key;
   `stayQuote` on conflicts of a request.
 - `tags` of a product and a product summary, e.g. `startseite`.

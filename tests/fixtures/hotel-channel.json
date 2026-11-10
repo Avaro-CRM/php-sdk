@@ -12,5 +12,10 @@
       "url": "https://dohlennest.example/datenschutz",
       "required": true
     }
+  ],
+  "requiredDetails": [
+    "Address",
+    "Phone",
+    "Unknown"
   ]
 }

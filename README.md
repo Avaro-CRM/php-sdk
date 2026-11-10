@@ -124,9 +124,12 @@ use Avaro\Sdk\Hotel\BookingRequest;
 use Avaro\Sdk\Hotel\Consent;
 use Avaro\Sdk\Hotel\Guest;
 use Avaro\Sdk\Hotel\Guests;
+use Avaro\Sdk\Hotel\RequiredDetail;
 use Avaro\Sdk\Hotel\Stay;
 
 $hotel = $avaro->hotel();
+$channel = $hotel->channel();                    // property, legal texts, required details
+$askPhone = $channel->requires(RequiredDetail::Phone);
 $unit = $hotel->units()->get($unitId);           // rates, pets, fees
 $days = $hotel->units()->calendar($unitId, $from, $to)->days;
 $stay = new Stay($arrival, $departure, new Guests(adults: 2, children: 1, pets: 1), $unitId);
