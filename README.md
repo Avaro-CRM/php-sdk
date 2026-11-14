@@ -217,13 +217,21 @@ $event = (new Webhook($webhookSecret))->verify(getallheaders(), file_get_content
 
 ## Development
 
+Development takes place in the Avaro monorepo under
+`packages/php/avaro-sdk/`. `Avaro-CRM/php-sdk` is the one-way distribution
+mirror; changes belong in the monorepo. SDK releases have their own versions.
+
 ```bash
 composer install
 composer check
 ```
 
 The contract test compares the SDK with the OpenAPI files of API v3 when
-`AVARO_API_V3_DIR` points to them.
+`AVARO_API_V3_DIR` points to them. From the package directory in the monorepo:
+
+```bash
+AVARO_API_V3_DIR="../../../docs/api/v3" composer check
+```
 
 ## License
 
