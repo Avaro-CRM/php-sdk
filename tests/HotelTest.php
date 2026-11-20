@@ -111,6 +111,14 @@ final class HotelTest extends TestCase
         $free = $this->avaro()->hotel()->availability(new Stay(new DateTimeImmutable('2027-07-01'), new DateTimeImmutable('2027-07-04'), new Guests(2)));
         self::assertSame('https://app.avaro.test/rest/v3/hotel/availability?arrival=2027-07-01&departure=2027-07-04&adults=2&children=0&infants=0&pets=0', (string) $this->http->last()->getUri());
         self::assertSame('Wohnung Dünenblick', $free[0]->unit->title);
+        self::assertFalse($free[0]->priceOnRequest);
+
+        $open = ['priceOnRequest' => true, 'lines' => [], 'totals' => ['net' => 0, 'tax' => 0, 'gross' => 0]] + Fixtures::load('hotel-quote');
+        $this->http->answer(200, ['data' => [$open]]);
+        $free = $this->avaro()->hotel()->availability(new Stay(new DateTimeImmutable('2027-09-01'), new DateTimeImmutable('2027-09-04'), new Guests(2)));
+        self::assertTrue($free[0]->priceOnRequest);
+        self::assertTrue($free[0]->valid);
+        self::assertSame([], $free[0]->lines);
     }
 
     public function testAStayChecksItsDates(): void

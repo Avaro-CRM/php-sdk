@@ -13,8 +13,9 @@ use Avaro\Sdk\Model\Totals;
 use DateTimeImmutable;
 
 /**
- * A calculated stay; valid when it has no problem. Send totals->gross
- * with the request.
+ * A calculated stay; valid when it has no problem and can be requested.
+ * With priceOnRequest a night has no seasonal price: no lines, totals 0,
+ * the tenant names the price. Send totals->gross with the request.
  */
 final class Quote
 {
@@ -33,6 +34,7 @@ final class Quote
         public readonly Totals $totals,
         public readonly bool $valid,
         public readonly array $problems,
+        public readonly bool $priceOnRequest = false,
     ) {}
 
     public static function fromData(Data $data): self
@@ -48,6 +50,7 @@ final class Quote
             Totals::fromData($data->data('totals')),
             $data->bool('valid'),
             array_map(QuoteProblem::fromData(...), $data->list('problems')),
+            $data->bool('priceOnRequest', false),
         );
     }
 

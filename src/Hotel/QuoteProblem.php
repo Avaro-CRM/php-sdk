@@ -12,7 +12,7 @@ use Avaro\Sdk\Model\Data;
 
 /**
  * Why a stay cannot be requested: code such as Unavailable, MinNights,
- * MaxGuests, MaxInfants, MaxPets, NotBookable, ArrivalInPast or NoRate,
+ * MaxGuests, MaxInfants, MaxPets, NotBookable or ArrivalInPast,
  * a text for people and the limit where there is one.
  */
 final class QuoteProblem

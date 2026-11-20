@@ -98,6 +98,7 @@
     "tax": 5778,
     "gross": 84000
   },
+  "priceOnRequest": false,
   "valid": true,
   "problems": []
 }
