@@ -16,10 +16,12 @@ use InvalidArgumentException;
  */
 final class Attendee
 {
+    /** @param array<int|string, string|bool|int|float|null> $additionalFields Values keyed by participant field ID. */
     public function __construct(
         public readonly string $firstName,
         public readonly string $lastName,
         public readonly ?DateTimeInterface $dateOfBirth = null,
+        public readonly array $additionalFields = [],
     ) {
         if ('' === trim($firstName) || '' === trim($lastName)) {
             throw new InvalidArgumentException('An attendee needs a first and a last name.');
@@ -27,10 +29,12 @@ final class Attendee
     }
 
     /**
-     * @return array{firstName: string, lastName: string, dateOfBirth: ?string}
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {
-        return ['firstName' => $this->firstName, 'lastName' => $this->lastName, 'dateOfBirth' => $this->dateOfBirth?->format('Y-m-d')];
+        $data = ['firstName' => $this->firstName, 'lastName' => $this->lastName, 'dateOfBirth' => $this->dateOfBirth?->format('Y-m-d')];
+        if ($this->additionalFields !== []) $data['additionalFields'] = (object) $this->additionalFields;
+        return $data;
     }
 }

@@ -17,4 +17,10 @@ enum FieldType: string
     case Checkbox = 'Checkbox';
     case Text = 'Text';
     case Choice = 'Choice';
+    case Select = 'Select';
+    case Textarea = 'Textarea';
+    case Number = 'Number';
+    case Date = 'Date';
+    case Email = 'Email';
+    case Phone = 'Phone';
 }

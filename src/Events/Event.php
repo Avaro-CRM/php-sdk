@@ -20,6 +20,7 @@ use DateTimeImmutable;
 final class Event
 {
     /**
+     * @param list<Field> $participantFields
      * @param list<Field> $fields
      */
     public function __construct(
@@ -39,6 +40,7 @@ final class Event
         public readonly Seats $seats,
         public readonly BookingWindow $booking,
         public readonly array $fields,
+        public readonly array $participantFields = [],
     ) {}
 
     public static function fromData(Data $data): self
@@ -64,6 +66,7 @@ final class Event
             Seats::fromData($data->data('seats')),
             BookingWindow::fromData($data->data('booking')),
             array_map(Field::fromData(...), $data->optList('fields') ?? []),
+            array_map(Field::fromData(...), $data->optList('participantFields') ?? []),
         );
     }
 
@@ -73,7 +76,7 @@ final class Event
      */
     public function bookable(int $attendees = 1): bool
     {
-        foreach ($this->fields as $field) {
+        foreach ([...$this->fields, ...$this->participantFields] as $field) {
             if ($field->required && null === $field->type) {
                 return false;
             }

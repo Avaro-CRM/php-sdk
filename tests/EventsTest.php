@@ -30,6 +30,22 @@ use InvalidArgumentException;
 
 final class EventsTest extends TestCase
 {
+    public function testParticipantAnswersAreSerializedAsAnObject(): void
+    {
+        $person = new Attendee('Anna', 'Weber', additionalFields: [31 => 'Fahrschule A', 32 => true]);
+        $data = json_decode(json_encode($person->toArray(), JSON_THROW_ON_ERROR), true, flags: JSON_THROW_ON_ERROR);
+        self::assertIsArray($data);
+        self::assertSame(['31' => 'Fahrschule A', '32' => true], $data['additionalFields']);
+        $field = \Avaro\Sdk\Events\Field::fromData(new \Avaro\Sdk\Model\Data([
+            'key' => '31', 'title' => 'Fahrschule', 'type' => 'Select', 'required' => true,
+            'options' => [['value' => 'A', 'title' => 'A']], 'hint' => 'Bitte auswählen',
+            'placeholder' => '', 'defaultValue' => 'A',
+        ]));
+        self::assertSame(\Avaro\Sdk\Events\FieldType::Select, $field->type);
+        self::assertSame('Bitte auswählen', $field->hint);
+        self::assertSame('A', $field->defaultValue);
+    }
+
     public function testTheChannel(): void
     {
         $this->http->fixture('events-channel');

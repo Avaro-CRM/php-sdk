@@ -27,6 +27,9 @@ final class Field
         public readonly ?FieldType $type,
         public readonly bool $required,
         public readonly array $options,
+        public readonly ?string $placeholder = null,
+        public readonly ?string $hint = null,
+        public readonly ?string $defaultValue = null,
     ) {}
 
     public static function fromData(Data $data): self
@@ -37,6 +40,9 @@ final class Field
             FieldType::tryFrom($data->string('type')),
             $data->bool('required', false),
             array_map(FieldOption::fromData(...), $data->optList('options') ?? []),
+            $data->optString('placeholder'),
+            $data->optString('hint'),
+            $data->optString('defaultValue'),
         );
     }
 }

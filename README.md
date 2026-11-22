@@ -186,6 +186,27 @@ if ($event->bookable(2)) {
 attendee times the attendees. A status or field type the SDK does not
 know never counts as bookable.
 
+### Fields for each attendee
+
+`$event->participantFields` contains the separately configured questions for every
+person (for example their driving school), including `key`, `type`, `required`,
+`options`, `placeholder`, `hint` and `defaultValue`. Render them once per attendee
+and pass answers by field key:
+
+```php
+$person = new Attendee('Anna', 'Weber', additionalFields: [
+    '31' => 'Driving school A',
+    '32' => true,
+]);
+```
+
+Each person's answers are sent as `attendees[].additionalFields`. Types include
+Text, Textarea, Number, Date (`YYYY-MM-DD`), Checkbox, Select, Email and Phone.
+Existing booking-level `$event->fields` stay separate. Required answers and
+allowed options are validated by Avaro for every attendee before completing the
+booking. Website forms must implement this rendering before required participant
+fields are enabled.
+
 ## Errors
 
 Every error is an `Exception\AvaroException`. Answers of the API are
