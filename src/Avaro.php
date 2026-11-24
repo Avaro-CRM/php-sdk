@@ -12,6 +12,7 @@ use Avaro\Sdk\Auth\Auth;
 use Avaro\Sdk\Auth\ClientCredentials;
 use Avaro\Sdk\Auth\Credentials;
 use Avaro\Sdk\Company\Company;
+use Avaro\Sdk\Crm\Crm;
 use Avaro\Sdk\Events\Events;
 use Avaro\Sdk\Hotel\Hotel;
 use Avaro\Sdk\Http\Transport;
@@ -139,6 +140,15 @@ final class Avaro
     public function todos(): Todos
     {
         return new Todos($this->transport);
+    }
+
+    /**
+     * CRM activities of addresses; every call acts for a user (asUser() or an
+     * employee token).
+     */
+    public function crm(): Crm
+    {
+        return new Crm($this->transport);
     }
 
     public function orders(): Orders

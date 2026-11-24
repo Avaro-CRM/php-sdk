@@ -244,6 +244,24 @@ $todos->update($todo->id, Changes::new()->complete(), $todo->etag);
 A `sourceKey` is unique while its todo is open: `create()` then returns
 that todo with `$created->created === false`.
 
+### CRM activities
+
+With `crm.activities:read`/`crm.activities:write` the client reads the
+history of a company and records notes and calls as the user. The user
+needs the right to read the address in Avaro.
+
+```php
+use Avaro\Sdk\Crm\{Activities, Call, NewActivity};
+
+$activities = $avaro->asUser($userId)->crm()->activities();
+$page = $activities->list($company, [Activities::NOTE, Activities::PHONE_CALL], limit: 20); // newest first
+foreach ($page->items as $activity) {
+    echo $activity->occurredAt->format('d.m.Y H:i'), ' ', $activity->title, ' ', $activity->author?->name, "\n";
+}
+$activities->create(NewActivity::note($company, 'Möchte zwei Standorte anbinden.', 'Note:' . $noteId));
+$activities->create(NewActivity::phoneCall($company, 'Rückruf vereinbart.', 'Outgoing', 125, Call::COMPLETED));
+```
+
 ## Errors
 
 Every error is an `Exception\AvaroException`. Answers of the API are

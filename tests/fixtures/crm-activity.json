@@ -1,0 +1,21 @@
+{
+    "id": "144256",
+    "type": "PhoneCall",
+    "occurredAt": "2026-11-24T08:15:00Z",
+    "title": "Rückruf",
+    "text": "Rückruf am Montag vereinbart.",
+    "textTruncated": false,
+    "direction": "Outgoing",
+    "author": { "id": "12", "name": "Anna Weber", "references": [ { "system": "ExamplePlatform", "externalId": "01HXA7Q2Z6V7C1M4K9P0R3S5T8" } ] },
+    "contact": { "id": "815", "name": "Florian Berg", "references": [] },
+    "participants": [
+        { "role": "Attendee", "name": null, "email": null, "contact": { "id": "815", "name": "Florian Berg", "references": [] } }
+    ],
+    "call": { "durationSeconds": 125, "status": "Completed", "outcome": "Entscheider erreicht", "fromNumber": null, "toNumber": null },
+    "addresses": [
+        { "id": "4711", "name": "Muster Bau GmbH", "customerNumber": "10042", "references": [ { "system": "ExamplePlatform", "externalId": "01HXB0COMPANY0000000000000" } ] }
+    ],
+    "origin": "Api",
+    "sourceKey": "Call:01JD2Q7B5K3M8N1P4R6T8V0X2Z",
+    "permissions": { "edit": true, "delete": true }
+}

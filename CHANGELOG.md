@@ -8,6 +8,10 @@ version per version of the API.
 
 ### Added
 
+- `crm()->activities()`: the CRM activities of an address with `list()`,
+  `each()` and `get()` (`Activity`, `Call`, `Participant`), and `create()`
+  for notes, calls, visits and emails (`NewActivity::note()`,
+  `NewActivity::phoneCall()`, `CreatedActivity::$created`).
 - `company()->addresses()`: read addresses (companies) by their ID in the
   client's external system and provision them (`AddressData`: only the
   fields set are sent, null clears; `Address::$created`).

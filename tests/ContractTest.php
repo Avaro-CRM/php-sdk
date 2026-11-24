@@ -65,6 +65,9 @@ final class ContractTest extends Base
         ['PATCH', '/todos/todos/{todo}', 'todos'],
         ['DELETE', '/todos/todos/{todo}', 'todos'],
         ['GET', '/todos/assignees', 'todos'],
+        ['GET', '/crm/activities', 'crm'],
+        ['POST', '/crm/activities', 'crm'],
+        ['GET', '/crm/activities/{activity}', 'crm'],
     ];
 
     /** Fixtures and the schema they follow. */
@@ -89,6 +92,7 @@ final class ContractTest extends Base
         'todo-summary' => 'todos.yaml#/components/schemas/TodoSummary',
         'company-user' => 'company.yaml#/components/schemas/User',
         'company-address' => 'company.yaml#/components/schemas/Address',
+        'crm-activity' => 'crm.yaml#/components/schemas/Activity',
     ];
 
     /** @var array<string, array<mixed>> */
