@@ -9,13 +9,17 @@ declare(strict_types=1);
 namespace Avaro\Sdk;
 
 use Avaro\Sdk\Auth\Auth;
+use Avaro\Sdk\Auth\ClientCredentials;
 use Avaro\Sdk\Auth\Credentials;
+use Avaro\Sdk\Company\Company;
 use Avaro\Sdk\Events\Events;
 use Avaro\Sdk\Hotel\Hotel;
 use Avaro\Sdk\Http\Transport;
 use Avaro\Sdk\Invoices\Invoices;
 use Avaro\Sdk\Orders\Orders;
 use Avaro\Sdk\Shop\Shop;
+use Avaro\Sdk\Todos\Todos;
+use LogicException;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -29,9 +33,12 @@ use Psr\Http\Message\StreamFactoryInterface;
  *     $orders = $avaro->withCustomer($login->token)->orders()->list();
  *     $quote = $avaro->hotel()->quotes()->create(new Stay($arrival, $departure, new Guests(2), $unitId));
  *     $events = $avaro->events()->events()->list(category: $courseId, available: true);
+ *     $avaro->company()->users()->provision('ExamplePlatform', $userId, new UserProfile($email, $first, $last));
+ *     $todos = $avaro->asUser($userId)->todos()->todos()->list(assignee: TodoList::ME);
  *
  * Immutable: withCustomer() returns a new client for calls on behalf of
- * a signed-in contact.
+ * a signed-in contact, asUser() one for calls on behalf of a user of the
+ * client's external system.
  */
 final class Avaro
 {
@@ -62,6 +69,21 @@ final class Avaro
     public function withCustomer(string $token): self
     {
         return new self($this->transport, $token);
+    }
+
+    /**
+     * A client acting for the user with this ID in the client's external
+     * system, by token exchange. Needs ClientCredentials.
+     */
+    public function asUser(string $externalUserId, ?string $scope = null): self
+    {
+        $credentials = $this->transport->credentials();
+
+        if (!$credentials instanceof ClientCredentials) {
+            throw new LogicException('asUser() needs ClientCredentials; pass UserCredentials or a BearerToken to Avaro::create() instead.');
+        }
+
+        return new self($this->transport->withCredentials($credentials->forUser($externalUserId, $scope)));
     }
 
     public function withoutCustomer(): self
@@ -99,6 +121,24 @@ final class Avaro
     public function events(): Events
     {
         return new Events($this->transport);
+    }
+
+    /**
+     * Users of the tenant by their ID in the client's external system;
+     * needs the client itself, not a user.
+     */
+    public function company(): Company
+    {
+        return new Company($this->transport);
+    }
+
+    /**
+     * Todos of the tenant; every call acts for a user (asUser() or an
+     * employee BearerToken).
+     */
+    public function todos(): Todos
+    {
+        return new Todos($this->transport);
     }
 
     public function orders(): Orders

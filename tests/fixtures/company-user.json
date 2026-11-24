@@ -1,0 +1,9 @@
+{
+    "id": "01M86334GB81CHYK0YQ9XMP3C9",
+    "email": "mara.stein@example.test",
+    "firstName": "Mara",
+    "lastName": "Stein",
+    "status": "Active",
+    "origin": "Provisioned",
+    "externalIds": [{"system": "ExamplePlatform", "externalId": "01HXA7Q2Z6V7C1M4K9P0R3S5T8"}]
+}

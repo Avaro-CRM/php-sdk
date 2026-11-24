@@ -17,6 +17,7 @@ use Avaro\Sdk\Exception\Gone;
 use Avaro\Sdk\Exception\IdempotencyConflict;
 use Avaro\Sdk\Exception\NotBookable;
 use Avaro\Sdk\Exception\NotFound;
+use Avaro\Sdk\Exception\PreconditionFailed;
 use Avaro\Sdk\Exception\Problem;
 use Avaro\Sdk\Exception\QuoteInvalid;
 use Avaro\Sdk\Exception\ServerError;
@@ -56,6 +57,7 @@ final class Errors
             404 === $result->status => new NotFound($problem),
             409 === $result->status => self::conflict($problem, $data),
             410 === $result->status => new Gone($problem),
+            412 === $result->status => new PreconditionFailed($problem),
             422 === $result->status => new ValidationFailed($problem, self::fieldErrors($data)),
             429 === $result->status => new TooManyRequests($problem, self::retryAfter($result)),
             $result->status >= 500 => new ServerError($problem),

@@ -45,6 +45,19 @@ final class Transport
         return $this->baseUrl;
     }
 
+    public function credentials(): Credentials
+    {
+        return $this->credentials;
+    }
+
+    /**
+     * The same transport with other credentials, e.g. a user token.
+     */
+    public function withCredentials(Credentials $credentials): self
+    {
+        return new self($this->baseUrl, $credentials, $this->http, $this->requests, $this->streams, $this->language);
+    }
+
     /**
      * A request to the API with the credentials of the client, answered
      * with 2xx or 304; every other status throws.
@@ -58,8 +71,7 @@ final class Transport
         $request = $this->request($method, $path, $query, $headers);
 
         if (null !== $json) {
-            $request = $request
-                ->withHeader('Content-Type', 'application/json')
+            $request = ($request->hasHeader('Content-Type') ? $request : $request->withHeader('Content-Type', 'application/json'))
                 ->withBody($this->streams->createStream(json_encode($json, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_PRESERVE_ZERO_FRACTION)));
         }
 

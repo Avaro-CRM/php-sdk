@@ -207,6 +207,34 @@ allowed options are validated by Avaro for every attendee before completing the
 booking. Website forms must implement this rendering before required participant
 fields are enabled.
 
+## Users and todos
+
+A server client that speaks for another system (its external system is
+set once in Avaro, e.g. `ExamplePlatform`) creates the users it needs and
+then acts for one of them. It needs the scopes `company.users:write`,
+`auth.users:exchange` and `todos.todos:read`/`todos.todos:write`.
+
+```php
+use Avaro\Sdk\Company\UserProfile;
+use Avaro\Sdk\Todos\{AddressReference, Changes, NewTodo, TodoList};
+
+$avaro = Avaro::create($baseUrl, new ClientCredentials($id, $secret), $http, $factory, $factory);
+
+// Once when a person is added on the platform; repeating it changes nothing.
+$avaro->company()->users()->provision('ExamplePlatform', $userId, new UserProfile($email, $firstName, $lastName));
+
+$todos = $avaro->asUser($userId)->todos()->todos();
+$summary = $todos->summary();                       // open, dueToday, overdue, highPriority
+$page = $todos->list(assignee: TodoList::ME, dueTo: date('Y-m-d'));
+$company = new AddressReference('ExamplePlatform', $companyId, $customerNumber); // linked on first write
+$created = $todos->create(new NewTodo('Kündigung besprechen', address: $company, sourceKey: 'SubscriptionTerminated:' . $subscriptionId), $idempotencyKey);
+$todo = $todos->get($created->todo->id);
+$todos->update($todo->id, Changes::new()->complete(), $todo->etag);
+```
+
+A `sourceKey` is unique while its todo is open: `create()` then returns
+that todo with `$created->created === false`.
+
 ## Errors
 
 Every error is an `Exception\AvaroException`. Answers of the API are

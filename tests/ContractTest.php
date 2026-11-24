@@ -54,6 +54,15 @@ final class ContractTest extends Base
         ['GET', '/events/events/{event}', 'events'],
         ['POST', '/events/bookings', 'events'],
         ['GET', '/events/attendees', 'events'],
+        ['GET', '/company/users/by-external-id/{system}/{externalId}', 'company'],
+        ['PUT', '/company/users/by-external-id/{system}/{externalId}', 'company'],
+        ['GET', '/todos/todos', 'todos'],
+        ['POST', '/todos/todos', 'todos'],
+        ['GET', '/todos/todos/summary', 'todos'],
+        ['GET', '/todos/todos/{todo}', 'todos'],
+        ['PATCH', '/todos/todos/{todo}', 'todos'],
+        ['DELETE', '/todos/todos/{todo}', 'todos'],
+        ['GET', '/todos/assignees', 'todos'],
     ];
 
     /** Fixtures and the schema they follow. */
@@ -74,6 +83,9 @@ final class ContractTest extends Base
         'events-event' => 'events.yaml#/components/schemas/Event',
         'events-booking' => 'events.yaml#/components/schemas/BookingSummary',
         'events-event-attendees' => 'events.yaml#/components/schemas/EventAttendees',
+        'todo' => 'todos.yaml#/components/schemas/Todo',
+        'todo-summary' => 'todos.yaml#/components/schemas/TodoSummary',
+        'company-user' => 'company.yaml#/components/schemas/User',
     ];
 
     /** @var array<string, array<mixed>> */

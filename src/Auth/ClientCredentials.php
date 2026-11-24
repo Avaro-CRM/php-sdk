@@ -37,6 +37,15 @@ final class ClientCredentials implements Credentials
     }
 
     /**
+     * Credentials for one user of the client's external system, by token
+     * exchange with the same client ID and secret.
+     */
+    public function forUser(string $externalUserId, ?string $scope = null): UserCredentials
+    {
+        return new UserCredentials($this->clientId, $this->secret, $externalUserId, $scope, $this->store);
+    }
+
+    /**
      * Forgets the token, e.g. after it was revoked.
      */
     public function forget(): void

@@ -8,6 +8,17 @@ version per version of the API.
 
 ### Added
 
+- `company()->users()`: read users by their ID in the client's external
+  system and provision them (`provision()` creates once, keeps the
+  profile; `User::$created`).
+- `asUser($externalUserId)` and `ClientCredentials::forUser()`: user
+  tokens by token exchange (`UserCredentials`, kept until shortly before
+  they expire).
+- `todos()`: list with filters and `each()`, counters, assignees, read
+  with ETag, create with idempotency key and `sourceKey` (`CreatedTodo`),
+  change as Merge Patch (`Changes`) with `If-Match`, delete to the trash;
+  `PreconditionFailed` for 412; `AddressReference` with the customer
+  number as fallback while the company ID is not linked yet.
 - `events()`: channel with legal texts and required details, categories
   with price and attendee limits, upcoming events with free seats,
   booking status and fields, and bookings for one or more attendees with

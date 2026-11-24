@@ -1,0 +1,23 @@
+{
+    "id": "01JD2Q6R8Y4V8N3K5T7W9X1Z2A",
+    "title": "Rückruf zur Kündigung",
+    "note": "Kunde wünscht Rückruf am Vormittag.",
+    "type": "Call",
+    "priority": "High",
+    "status": "Open",
+    "dueDate": "2026-11-25",
+    "dueTime": "10:30",
+    "timeZone": "Europe/Berlin",
+    "reminderAt": "2026-11-25T09:00:00Z",
+    "completedAt": null,
+    "assignee": {"id": "53", "name": "Mara Stein", "references": [{"system": "ExamplePlatform", "externalId": "01HXA7Q2Z6V7C1M4K9P0R3S5T8"}]},
+    "createdBy": {"id": "1", "name": "Erika Muster", "references": []},
+    "address": {"id": "84927", "name": "Tischlerei Holz GmbH", "customerNumber": "10042", "references": [{"system": "ExamplePlatform", "externalId": "01HXB0COMPANY0000000000000"}]},
+    "contact": null,
+    "project": null,
+    "source": null,
+    "sourceKey": "SubscriptionTerminated:01HXC0SUBSCRIPTION000000000",
+    "createdAt": "2026-11-24T08:15:00Z",
+    "updatedAt": "2026-11-24T08:15:00Z",
+    "permissions": {"edit": true, "delete": true}
+}
