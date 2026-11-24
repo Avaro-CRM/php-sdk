@@ -54,6 +54,8 @@ final class ContractTest extends Base
         ['GET', '/events/events/{event}', 'events'],
         ['POST', '/events/bookings', 'events'],
         ['GET', '/events/attendees', 'events'],
+        ['GET', '/company/addresses/by-external-id/{system}/{externalId}', 'company'],
+        ['PUT', '/company/addresses/by-external-id/{system}/{externalId}', 'company'],
         ['GET', '/company/users/by-external-id/{system}/{externalId}', 'company'],
         ['PUT', '/company/users/by-external-id/{system}/{externalId}', 'company'],
         ['GET', '/todos/todos', 'todos'],
@@ -86,6 +88,7 @@ final class ContractTest extends Base
         'todo' => 'todos.yaml#/components/schemas/Todo',
         'todo-summary' => 'todos.yaml#/components/schemas/TodoSummary',
         'company-user' => 'company.yaml#/components/schemas/User',
+        'company-address' => 'company.yaml#/components/schemas/Address',
     ];
 
     /** @var array<string, array<mixed>> */

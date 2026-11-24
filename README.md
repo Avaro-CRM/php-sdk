@@ -207,21 +207,30 @@ allowed options are validated by Avaro for every attendee before completing the
 booking. Website forms must implement this rendering before required participant
 fields are enabled.
 
-## Users and todos
+## Users, companies and todos
 
 A server client that speaks for another system (its external system is
-set once in Avaro, e.g. `ExamplePlatform`) creates the users it needs and
-then acts for one of them. It needs the scopes `company.users:write`,
-`auth.users:exchange` and `todos.todos:read`/`todos.todos:write`.
+set once in Avaro, e.g. `ExamplePlatform`) creates the users and
+companies it needs and then acts for one of the users. It needs the scopes
+`company.users:write`, `company.addresses:write` (and an Avaro user of the
+client), `auth.users:exchange` and `todos.todos:read`/`todos.todos:write`.
 
 ```php
-use Avaro\Sdk\Company\UserProfile;
+use Avaro\Sdk\Company\{AddressData, UserProfile};
 use Avaro\Sdk\Todos\{AddressReference, Changes, NewTodo, TodoList};
 
 $avaro = Avaro::create($baseUrl, new ClientCredentials($id, $secret), $http, $factory, $factory);
 
 // Once when a person is added on the platform; repeating it changes nothing.
 $avaro->company()->users()->provision('ExamplePlatform', $userId, new UserProfile($email, $firstName, $lastName));
+
+// On registration and every change of a company; links the one address with the customer number, else creates it.
+$avaro->company()->addresses()->provision('ExamplePlatform', $companyId, AddressData::named($name)
+    ->customerNumber($customerNumber)
+    ->location($street, $streetNumber, $zipcode, $city, 'DE')
+    ->email($email)
+    ->phone($phone)
+    ->website($website));
 
 $todos = $avaro->asUser($userId)->todos()->todos();
 $summary = $todos->summary();                       // open, dueToday, overdue, highPriority

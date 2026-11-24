@@ -1,0 +1,16 @@
+{
+    "id": "4711",
+    "name": "Muster Bau GmbH",
+    "customerNumber": "10042",
+    "email": "info@muster-bau.example",
+    "phone": null,
+    "website": null,
+    "street": "Hauptstraße",
+    "streetNumber": "1",
+    "zipcode": "26122",
+    "city": "Oldenburg",
+    "country": "DE",
+    "status": "Active",
+    "origin": "Provisioned",
+    "externalIds": [{"system": "ExamplePlatform", "externalId": "01HXB0COMPANY0000000000000"}]
+}

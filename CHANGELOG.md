@@ -8,6 +8,9 @@ version per version of the API.
 
 ### Added
 
+- `company()->addresses()`: read addresses (companies) by their ID in the
+  client's external system and provision them (`AddressData`: only the
+  fields set are sent, null clears; `Address::$created`).
 - `company()->users()`: read users by their ID in the client's external
   system and provision them (`provision()` creates once, keeps the
   profile; `User::$created`).
