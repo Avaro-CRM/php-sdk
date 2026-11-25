@@ -26,6 +26,8 @@ use Avaro\Sdk\Exception\TooManyRequests;
 use Avaro\Sdk\Exception\TotalChanged;
 use Avaro\Sdk\Exception\Unauthorized;
 use Avaro\Sdk\Exception\UnexpectedResponse;
+use Avaro\Sdk\Exception\UserLinkRejected;
+use Avaro\Sdk\Exception\UserLinkRequested;
 use Avaro\Sdk\Exception\ValidationFailed;
 use Avaro\Sdk\Events\Event;
 use Avaro\Sdk\Hotel\Quote as StayQuote;
@@ -112,6 +114,8 @@ final class Errors
             'sold-out' => new SoldOut($problem, event: $event),
             'not-bookable' => new NotBookable($problem, event: $event),
             'idempotency-conflict' => new IdempotencyConflict($problem, $quote, $stayQuote),
+            'user-link-requested' => new UserLinkRequested($problem),
+            'user-link-rejected' => new UserLinkRejected($problem),
             default => new Conflict($problem, $quote, $stayQuote, $event),
         };
     }

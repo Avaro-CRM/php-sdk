@@ -222,7 +222,13 @@ use Avaro\Sdk\Todos\{AddressReference, Changes, NewTodo, TodoList};
 $avaro = Avaro::create($baseUrl, new ClientCredentials($id, $secret), $http, $factory, $factory);
 
 // Once when a person is added on the platform; repeating it changes nothing.
-$avaro->company()->users()->provision('ExamplePlatform', $userId, new UserProfile($email, $firstName, $lastName));
+try {
+    $avaro->company()->users()->provision('ExamplePlatform', $userId, new UserProfile($email, $firstName, $lastName));
+} catch (\Avaro\Sdk\Exception\UserLinkRequested) {
+    // An employee of the tenant has this email: a tenant admin confirms the link in Avaro, then repeat the call.
+} catch (\Avaro\Sdk\Exception\UserLinkRejected) {
+    // The tenant rejected linking this person.
+}
 
 // On registration and every change of a company; links the one address with the customer number, else creates it.
 $avaro->company()->addresses()->provision('ExamplePlatform', $companyId, AddressData::named($name)
@@ -273,7 +279,7 @@ Every error is an `Exception\AvaroException`. Answers of the API are
 | 401 | `Unauthorized` |
 | 403 | `Forbidden` |
 | 404 | `NotFound` |
-| 409 | `Conflict`, `TotalChanged`, `QuoteInvalid`, `SoldOut`, `NotBookable`, `IdempotencyConflict` (with `quote` of the shop, `stayQuote` of a stay or `event` of a booking) |
+| 409 | `Conflict`, `TotalChanged`, `QuoteInvalid`, `SoldOut`, `NotBookable`, `IdempotencyConflict` (with `quote` of the shop, `stayQuote` of a stay or `event` of a booking), `UserLinkRequested`, `UserLinkRejected` |
 | 410 | `Gone` |
 | 422 | `ValidationFailed` (`errors`, `messages()`) |
 | 429 | `TooManyRequests` (`retryAfter`) |

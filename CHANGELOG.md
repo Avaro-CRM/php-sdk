@@ -6,6 +6,17 @@ version per version of the API.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-25
+
+### Added
+
+- `UserLinkRequested` (`user-link-requested`) and `UserLinkRejected`
+  (`user-link-rejected`) from `company()->users()->provision()`: an
+  employee of the tenant already has the email, so Avaro records a link
+  request the tenant approves or rejects instead of creating a user.
+
+## [1.0.0] - 2026-11-24
+
 ### Added
 
 - `crm()->activities()`: the CRM activities of an address with `list()`,

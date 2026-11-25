@@ -14,6 +14,8 @@ use Avaro\Sdk\Company\User;
 use Avaro\Sdk\Company\UserProfile;
 use Avaro\Sdk\Exception\Conflict;
 use Avaro\Sdk\Exception\Forbidden;
+use Avaro\Sdk\Exception\UserLinkRejected;
+use Avaro\Sdk\Exception\UserLinkRequested;
 use Avaro\Sdk\Tests\Support\Fixtures;
 
 final class CompanyTest extends TestCase
@@ -55,6 +57,24 @@ final class CompanyTest extends TestCase
 
         $this->expectException(Forbidden::class);
         $users->provision('OtherSystem', 'u-1', new UserProfile('a@example.test', '', 'Muster'));
+    }
+
+    public function testAnEmailOfAnEmployeeAsksTheTenantToLink(): void
+    {
+        $this->http
+            ->answer(409, ['type' => 'https://app.avaro.test/rest/v3/problems/user-link-requested', 'title' => 'An Avaro user has this email; linking needs the approval of the tenant.', 'status' => 409])
+            ->answer(409, ['type' => 'https://app.avaro.test/rest/v3/problems/user-link-rejected', 'title' => 'The tenant rejected linking this ID to the Avaro user with this email.', 'status' => 409]);
+        $users = $this->avaro()->company()->users();
+
+        try {
+            $users->provision('ExamplePlatform', 'u-1', new UserProfile('anna@example.test', 'Anna', 'Weber'));
+            self::fail('No exception.');
+        } catch (UserLinkRequested $error) {
+            self::assertSame([409, 'user-link-requested'], [$error->status(), $error->slug()]);
+        }
+
+        $this->expectException(UserLinkRejected::class);
+        $users->provision('ExamplePlatform', 'u-1', new UserProfile('anna@example.test', 'Anna', 'Weber'));
     }
 
     public function testAddressProvisionSendsOnlyTheFieldsSetAndCreatesOnce(): void
