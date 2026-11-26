@@ -6,13 +6,7 @@ version per version of the API.
 
 ## [Unreleased]
 
-### Added
-
-- `Shop\Channel::$pricesPublic`: guests without a customer token get
-  prices from `shop()->products()`, the price of the online shop for
-  everyone. `priceDisplay` now follows the settings of the client.
-
-## [1.1.0] - 2026-11-25
+## [1.1.0] - 2026-11-26
 
 ### Added
 
@@ -20,6 +14,23 @@ version per version of the API.
   (`user-link-rejected`) from `company()->users()->provision()`: an
   employee of the tenant already has the email, so Avaro records a link
   request the tenant approves or rejects instead of creating a user.
+- `Company\Address::$targetAccount` (`?bool`) and
+  `Company\Address::$additionalFields` (`list<AdditionalField>`, null when
+  not requested) with `additionalField($title)`; new classes
+  `Company\AdditionalField` and `Company\AdditionalFieldTag`.
+- `company()->addresses()->get($system, $externalId, additionalFields: true)`
+  reads the additional fields, e.g. KAM-Fit.
+- `company()->addresses()->setTargetAccount($system, $externalId, ?bool)`
+  sets the target account for a user (`asUser()`), through
+  `PATCH /company/addresses/by-external-id/{system}/{externalId}`.
+- `Shop\Channel::$pricesPublic`: guests without a customer token get
+  prices from `shop()->products()`, the price of the online shop for
+  everyone. `priceDisplay` now follows the settings of the client.
+
+### Changed
+
+- `company()->users()->provision()`: first and last name may be empty
+  strings; only the email is required.
 
 ## [1.0.0] - 2026-11-24
 

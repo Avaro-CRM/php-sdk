@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace Avaro\Sdk\Tests;
 
+use Avaro\Sdk\Company\AdditionalField;
 use Avaro\Sdk\Company\Address;
 use Avaro\Sdk\Company\AddressData;
 use Avaro\Sdk\Company\User;
@@ -97,6 +98,37 @@ final class CompanyTest extends TestCase
         self::assertFalse($addresses->provision('ExamplePlatform', '01HXB0COMPANY0000000000000', AddressData::named('Muster Bau GmbH'))->created);
         self::assertSame(['name' => 'Muster Bau GmbH'], $this->http->lastJson());
         self::assertSame('Oldenburg', $addresses->get('ExamplePlatform', '01HXB0COMPANY0000000000000')->city);
+    }
+
+    public function testTheTargetAccountAndAdditionalFieldsAreReadAndTheTargetAccountIsSet(): void
+    {
+        $this->http
+            ->answer(200, Fixtures::load('company-address'))
+            ->answer(200, Fixtures::load('company-address-expanded'))
+            ->answer(200, Fixtures::load('company-address-expanded'))
+            ->answer(200, Fixtures::load('company-address'));
+        $addresses = $this->avaro()->company()->addresses();
+
+        $plain = $addresses->get('ExamplePlatform', 'c-1');
+        self::assertSame('', $this->http->last()->getUri()->getQuery());
+        self::assertNull($plain->targetAccount);
+        self::assertNull($plain->additionalFields, 'Not requested.');
+
+        $expanded = $addresses->get('ExamplePlatform', 'c-1', additionalFields: true);
+        self::assertSame('expand=additionalFields', $this->http->last()->getUri()->getQuery());
+        self::assertTrue($expanded->targetAccount);
+        $kam = $expanded->additionalField('KAM-Fit');
+        self::assertSame(['4', AdditionalField::TAGS, true, '2528', 'Obi'], [$kam?->id, $kam?->type, $kam?->stored, $kam?->tags()[0]->id, $kam?->tags()[0]->title]);
+        self::assertSame([null, true, []], [$expanded->additionalField('Mitarbeiterzahl')?->value, $expanded->additionalField('Rahmenvertrag')?->value, $expanded->additionalField('Rahmenvertrag')?->tags()]);
+        self::assertNull($expanded->additionalField('Fehlt'));
+
+        $set = $addresses->setTargetAccount('ExamplePlatform', 'c-1', true, additionalFields: true);
+        self::assertSame(['PATCH', '/rest/v3/company/addresses/by-external-id/ExamplePlatform/c-1', 'expand=additionalFields'], [$this->http->last()->getMethod(), $this->http->last()->getUri()->getPath(), $this->http->last()->getUri()->getQuery()]);
+        self::assertSame(['targetAccount' => true], $this->http->lastJson());
+        self::assertTrue($set->targetAccount);
+
+        $addresses->setTargetAccount('ExamplePlatform', 'c-1', null);
+        self::assertSame(['targetAccount' => null], $this->http->lastJson(), 'null clears the target account.');
     }
 
     public function testAnAmbiguousCustomerNumberIsRefused(): void

@@ -250,6 +250,25 @@ $todos->update($todo->id, Changes::new()->complete(), $todo->etag);
 A `sourceKey` is unique while its todo is open: `create()` then returns
 that todo with `$created->created === false`.
 
+### Target account and additional fields of a company
+
+`get()` reads the target account (`true`, `false` or `null` for not
+specified) and, on request, the additional fields such as KAM-Fit.
+`provision()` never changes the target account. To set it, the client
+acts for a user with `company.addresses:write`; the user needs the right
+to edit addresses in Avaro, and the change is in the history under the
+user's name.
+
+```php
+$address = $avaro->company()->addresses()->get('ExamplePlatform', $companyId, additionalFields: true);
+$address->targetAccount;                                     // ?bool
+foreach ($address->additionalField('KAM-Fit')?->tags() ?? [] as $tag) {
+    echo $tag->title, "\n";
+}
+
+$avaro->asUser($userId)->company()->addresses()->setTargetAccount('ExamplePlatform', $companyId, true); // null: not specified
+```
+
 ### CRM activities
 
 With `crm.activities:read`/`crm.activities:write` the client reads the

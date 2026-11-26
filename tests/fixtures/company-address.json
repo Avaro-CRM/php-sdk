@@ -10,7 +10,13 @@
     "zipcode": "26122",
     "city": "Oldenburg",
     "country": "DE",
+    "targetAccount": null,
     "status": "Active",
     "origin": "Provisioned",
-    "externalIds": [{"system": "ExamplePlatform", "externalId": "01HXB0COMPANY0000000000000"}]
+    "externalIds": [
+        {
+            "system": "ExamplePlatform",
+            "externalId": "01HXB0COMPANY0000000000000"
+        }
+    ]
 }

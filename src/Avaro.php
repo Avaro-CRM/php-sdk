@@ -43,7 +43,7 @@ use Psr\Http\Message\StreamFactoryInterface;
  */
 final class Avaro
 {
-    public const VERSION = '1.0.0';
+    public const VERSION = '1.1.0';
 
     public function __construct(
         private readonly Transport $transport,

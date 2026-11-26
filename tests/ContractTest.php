@@ -56,6 +56,7 @@ final class ContractTest extends Base
         ['GET', '/events/attendees', 'events'],
         ['GET', '/company/addresses/by-external-id/{system}/{externalId}', 'company'],
         ['PUT', '/company/addresses/by-external-id/{system}/{externalId}', 'company'],
+        ['PATCH', '/company/addresses/by-external-id/{system}/{externalId}', 'company'],
         ['GET', '/company/users/by-external-id/{system}/{externalId}', 'company'],
         ['PUT', '/company/users/by-external-id/{system}/{externalId}', 'company'],
         ['GET', '/todos/todos', 'todos'],
@@ -92,6 +93,7 @@ final class ContractTest extends Base
         'todo-summary' => 'todos.yaml#/components/schemas/TodoSummary',
         'company-user' => 'company.yaml#/components/schemas/User',
         'company-address' => 'company.yaml#/components/schemas/Address',
+        'company-address-expanded' => 'company.yaml#/components/schemas/Address',
         'crm-activity' => 'crm.yaml#/components/schemas/Activity',
     ];
 

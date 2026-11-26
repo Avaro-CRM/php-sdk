@@ -1,0 +1,50 @@
+{
+    "id": "4711",
+    "name": "Muster Bau GmbH",
+    "customerNumber": "10042",
+    "email": "info@muster-bau.example",
+    "phone": null,
+    "website": null,
+    "street": "Hauptstraße",
+    "streetNumber": "1",
+    "zipcode": "26122",
+    "city": "Oldenburg",
+    "country": "DE",
+    "targetAccount": true,
+    "additionalFields": [
+        {
+            "id": "4",
+            "title": "KAM-Fit",
+            "type": "Tags",
+            "stored": true,
+            "value": [
+                {
+                    "id": "2528",
+                    "title": "Obi"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "title": "Mitarbeiterzahl",
+            "type": "Number",
+            "stored": false,
+            "value": null
+        },
+        {
+            "id": "9",
+            "title": "Rahmenvertrag",
+            "type": "Checkbox",
+            "stored": true,
+            "value": true
+        }
+    ],
+    "status": "Active",
+    "origin": "Provisioned",
+    "externalIds": [
+        {
+            "system": "ExamplePlatform",
+            "externalId": "01HXB0COMPANY0000000000000"
+        }
+    ]
+}

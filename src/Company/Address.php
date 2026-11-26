@@ -17,6 +17,11 @@ use Avaro\Sdk\Todos\ExternalReference;
  * origin is Provisioned (created by the client) or Linked (an existing
  * address, e.g. found by customer number). created is true when the call
  * created the address.
+ *
+ * targetAccount is true or false for a company and null when it is not
+ * specified or the address is no company; provision() never changes it, see
+ * Addresses::setTargetAccount(). additionalFields is null unless they were
+ * requested (Addresses::get(..., additionalFields: true)).
  */
 final class Address
 {
@@ -27,7 +32,8 @@ final class Address
     public const LINKED = 'Linked';
 
     /**
-     * @param list<ExternalReference> $externalIds
+     * @param list<ExternalReference>    $externalIds
+     * @param list<AdditionalField>|null $additionalFields
      */
     public function __construct(
         public readonly string $id,
@@ -45,7 +51,21 @@ final class Address
         public readonly string $origin,
         public readonly array $externalIds,
         public readonly bool $created = false,
+        public readonly ?bool $targetAccount = null,
+        public readonly ?array $additionalFields = null,
     ) {}
+
+    /** The additional field with this title, e.g. 'KAM-Fit'; null when absent or not requested. */
+    public function additionalField(string $title): ?AdditionalField
+    {
+        foreach ($this->additionalFields ?? [] as $field) {
+            if ($field->title === $title) {
+                return $field;
+            }
+        }
+
+        return null;
+    }
 
     public static function fromData(Data $data, bool $created = false): self
     {
@@ -65,6 +85,13 @@ final class Address
             $data->string('origin'),
             ExternalReference::list($data->list('externalIds')),
             $created,
+            self::optBool($data, 'targetAccount'),
+            null === ($fields = $data->optList('additionalFields')) ? null : array_map(AdditionalField::fromData(...), $fields),
         );
+    }
+
+    private static function optBool(Data $data, string $key): ?bool
+    {
+        return $data->has($key) ? $data->bool($key) : null;
     }
 }
