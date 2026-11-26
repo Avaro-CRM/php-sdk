@@ -3,6 +3,7 @@
     "currency": "EUR",
     "priceDisplay": "Net",
     "catalogPublic": true,
+    "pricesPublic": false,
     "paymentMethods": [{"key": "Invoice", "title": "Rechnung"}],
     "minimumOrder": {"net": 15000},
     "legal": [

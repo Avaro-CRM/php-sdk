@@ -6,6 +6,12 @@ version per version of the API.
 
 ## [Unreleased]
 
+### Added
+
+- `Shop\Channel::$pricesPublic`: guests without a customer token get
+  prices from `shop()->products()`, the price of the online shop for
+  everyone. `priceDisplay` now follows the settings of the client.
+
 ## [1.1.0] - 2026-11-25
 
 ### Added

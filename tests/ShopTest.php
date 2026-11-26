@@ -34,6 +34,7 @@ final class ShopTest extends TestCase
 
         self::assertSame('avc_1', $this->http->last()->getHeaderLine('X-Customer-Token'));
         self::assertSame(PriceDisplay::Net, $channel->priceDisplay);
+        self::assertFalse($channel->pricesPublic);
         self::assertSame(15000, $channel->minimumOrderNet);
         self::assertSame('Invoice', $channel->paymentMethods[0]->key);
         self::assertTrue($channel->legal[0]->required);
