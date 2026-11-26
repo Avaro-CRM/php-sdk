@@ -1,0 +1,8 @@
+{
+    "id": "5",
+    "title": "Branche",
+    "type": "Select",
+    "mandatory": false,
+    "onlyCompanies": true,
+    "options": ["Bau", "Elektro"]
+}

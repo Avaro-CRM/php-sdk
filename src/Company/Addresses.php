@@ -42,7 +42,48 @@ final class Addresses extends Resource
      */
     public function setTargetAccount(string $system, string $externalId, ?bool $targetAccount, bool $additionalFields = false): Address
     {
-        return Address::fromData($this->transport->send('PATCH', self::path($system, $externalId), self::expand($additionalFields), ['targetAccount' => $targetAccount])->data());
+        return $this->update($system, $externalId, AddressChanges::new()->targetAccount($targetAccount), $additionalFields);
+    }
+
+    /**
+     * Changes the target account and additional fields of a company for a
+     * user, like setTargetAccount(): call it on asUser(). Only what the
+     * changes set is written; invalid values change nothing.
+     *
+     * @throws \Avaro\Sdk\Exception\Unauthorized     without a user token (user-token-required)
+     * @throws \Avaro\Sdk\Exception\Forbidden        with slug address-not-editable, foreign-system or missing-scope
+     * @throws \Avaro\Sdk\Exception\NotFound
+     * @throws \Avaro\Sdk\Exception\Conflict         with slug address-deleted or address-missing
+     * @throws \Avaro\Sdk\Exception\ValidationFailed with a pointer per field, e.g. /additionalFields/4
+     */
+    public function update(string $system, string $externalId, AddressChanges $changes, bool $additionalFields = false): Address
+    {
+        return Address::fromData($this->transport->send('PATCH', self::path($system, $externalId), self::expand($additionalFields), $changes->toArray())->data());
+    }
+
+    /**
+     * The additional fields of addresses, in the order of Avaro's form.
+     *
+     * @return list<AddressFieldDefinition>
+     */
+    public function fields(): array
+    {
+        return array_map(AddressFieldDefinition::fromData(...), $this->transport->send('GET', '/company/address-fields')->data()->list('data'));
+    }
+
+    /**
+     * Tags of a tag field by title, as suggestions; search is part of the title.
+     *
+     * @return list<AdditionalFieldTag>
+     *
+     * @throws \Avaro\Sdk\Exception\NotFound when the field is no tag field
+     */
+    public function fieldTags(string $fieldId, ?string $search = null, int $limit = 50): array
+    {
+        $query = ['limit' => (string) $limit] + (null === $search ? [] : ['search' => $search]);
+        $tags = $this->transport->send('GET', '/company/address-fields/' . self::segment($fieldId) . '/tags', $query)->data()->list('data');
+
+        return array_map(fn($tag) => new AdditionalFieldTag($tag->string('id'), $tag->string('title')), $tags);
     }
 
     /**

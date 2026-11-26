@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace Avaro\Sdk\Tests;
 
 use Avaro\Sdk\Company\AdditionalField;
+use Avaro\Sdk\Company\AddressChanges;
 use Avaro\Sdk\Company\Address;
 use Avaro\Sdk\Company\AddressData;
 use Avaro\Sdk\Company\User;
@@ -129,6 +130,35 @@ final class CompanyTest extends TestCase
 
         $addresses->setTargetAccount('ExamplePlatform', 'c-1', null);
         self::assertSame(['targetAccount' => null], $this->http->lastJson(), 'null clears the target account.');
+    }
+
+    public function testAdditionalFieldsAreDefinedSuggestedAndChanged(): void
+    {
+        $this->http
+            ->answer(200, ['data' => [Fixtures::load('company-address-field'), ['id' => '4', 'title' => 'KAM-Fit', 'type' => 'Tags', 'mandatory' => false, 'onlyCompanies' => true, 'options' => null]]])
+            ->answer(200, ['data' => [['id' => '2528', 'title' => 'Obi']]])
+            ->answer(200, Fixtures::load('company-address-expanded'))
+            ->answer(200, Fixtures::load('company-address'));
+        $addresses = $this->avaro()->company()->addresses();
+
+        $fields = $addresses->fields();
+        self::assertSame(['5', 'Select', ['Bau', 'Elektro'], true], [$fields[0]->id, $fields[0]->type, $fields[0]->options, $fields[0]->onlyCompanies]);
+        self::assertNull($fields[1]->options);
+
+        $tags = $addresses->fieldTags('4', 'Ob', 10);
+        self::assertSame('/rest/v3/company/address-fields/4/tags', $this->http->last()->getUri()->getPath());
+        parse_str($this->http->last()->getUri()->getQuery(), $query);
+        self::assertSame(['limit' => '10', 'search' => 'Ob'], $query);
+        self::assertSame(['2528', 'Obi'], [$tags[0]->id, $tags[0]->title]);
+
+        $changes = AddressChanges::new()->targetAccount(false)->tags('4', existing: ['2528'], new: ['Neu'])->value('5', 'Bau')->value('6', 42)->clear('7');
+        $address = $addresses->update('ExamplePlatform', 'c-1', $changes, additionalFields: true);
+        self::assertSame(['PATCH', 'expand=additionalFields'], [$this->http->last()->getMethod(), $this->http->last()->getUri()->getQuery()]);
+        self::assertSame('{"additionalFields":{"4":[{"id":"2528"},{"title":"Neu"}],"5":"Bau","6":42,"7":null},"targetAccount":false}', (string) $this->http->last()->getBody());
+        self::assertSame('KAM-Fit', $address->additionalFields[0]->title ?? null);
+
+        $addresses->update('ExamplePlatform', 'c-1', AddressChanges::new());
+        self::assertSame('[]', (string) $this->http->last()->getBody(), 'No changes: the address as it is.');
     }
 
     public function testAnAmbiguousCustomerNumberIsRefused(): void

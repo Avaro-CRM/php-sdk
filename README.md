@@ -269,6 +269,24 @@ foreach ($address->additionalField('KAM-Fit')?->tags() ?? [] as $tag) {
 $avaro->asUser($userId)->company()->addresses()->setTargetAccount('ExamplePlatform', $companyId, true); // null: not specified
 ```
 
+The fields for a form come from `fields()` (type, mandatory, the options
+of a selection) and the tags of a tag field from `fieldTags()`. `update()`
+writes only the fields set, checked as in Avaro's form; invalid values
+change nothing and throw `ValidationFailed` with a pointer per field.
+
+```php
+use Avaro\Sdk\Company\AddressChanges;
+
+$fields = $avaro->company()->addresses()->fields();
+$suggestions = $avaro->company()->addresses()->fieldTags($kamFitId, search: 'Ob');
+
+$avaro->asUser($userId)->company()->addresses()->update('ExamplePlatform', $companyId, AddressChanges::new()
+    ->targetAccount(true)
+    ->tags($kamFitId, existing: [$suggestions[0]->id], new: ['Neuer Kunde']) // replaces the tags
+    ->value($branchId, 'Bau')
+    ->clear($employeesId));
+```
+
 ### CRM activities
 
 With `crm.activities:read`/`crm.activities:write` the client reads the

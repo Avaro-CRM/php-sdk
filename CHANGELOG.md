@@ -6,6 +6,23 @@ version per version of the API.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-26
+
+### Added
+
+- `company()->addresses()->update($system, $externalId, AddressChanges, additionalFields: bool)`
+  changes the target account and additional fields of a company for a
+  user (`asUser()`); only what is set changes. `AddressChanges` has
+  `targetAccount()`, `value()`, `clear()` and `tags($fieldId, existing:, new:)`.
+- `company()->addresses()->fields()` with `Company\AddressFieldDefinition`
+  (type, mandatory, options of a selection) and
+  `company()->addresses()->fieldTags($fieldId, $search, $limit)` for tag
+  suggestions.
+
+### Changed
+
+- `setTargetAccount()` sends through `update()`; the request is the same.
+
 ## [1.1.0] - 2026-11-26
 
 ### Added
