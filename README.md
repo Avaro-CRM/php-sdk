@@ -287,6 +287,21 @@ $avaro->asUser($userId)->company()->addresses()->update('ExamplePlatform', $comp
     ->clear($employeesId));
 ```
 
+### Contact persons of a company
+
+With `contacts: true`, `get()` also reads the company's contact persons
+from the CRM: only active ones outside the trash, each with its job
+position and contact fields. `email()` and `phone()` give the primary
+value, else the first one; `phone()` falls back to a mobile number.
+
+```php
+$address = $avaro->company()->addresses()->get('ExamplePlatform', $companyId, additionalFields: true, contacts: true);
+
+foreach ($address->contacts ?? [] as $contact) {
+    echo $contact->name(), ' – ', $contact->position ?? '', ' ', $contact->email() ?? '', ' ', $contact->phone() ?? '', "\n";
+}
+```
+
 ### CRM activities
 
 With `crm.activities:read`/`crm.activities:write` the client reads the

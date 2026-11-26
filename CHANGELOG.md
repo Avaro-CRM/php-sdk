@@ -6,6 +6,20 @@ version per version of the API.
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-11-26
+
+### Added
+
+- `company()->addresses()->get($system, $externalId, contacts: true)` reads
+  the contact persons of a company from the CRM (`expand=contacts`, can be
+  combined with `additionalFields: true`). Only active contacts outside
+  the trash are listed.
+- `Company\Address::$contacts` (`list<AddressContact>`, null when not
+  requested); new classes `Company\AddressContact` (`id`, `title`,
+  `firstName`, `lastName`, `position`, `fields`, with `name()`, `email()`,
+  `phone()` and `fieldsOfType()`) and `Company\AddressContactField`
+  (`id`, `type`, `scope`, `value`, `primary`).
+
 ## [1.2.0] - 2026-11-26
 
 ### Added

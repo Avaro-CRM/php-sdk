@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace Avaro\Sdk\Tests;
 
 use Avaro\Sdk\Company\AdditionalField;
+use Avaro\Sdk\Company\AddressContact;
+use Avaro\Sdk\Company\AddressContactField;
 use Avaro\Sdk\Company\AddressChanges;
 use Avaro\Sdk\Company\Address;
 use Avaro\Sdk\Company\AddressData;
@@ -130,6 +132,44 @@ final class CompanyTest extends TestCase
 
         $addresses->setTargetAccount('ExamplePlatform', 'c-1', null);
         self::assertSame(['targetAccount' => null], $this->http->lastJson(), 'null clears the target account.');
+    }
+
+    public function testContactsAreReadOnlyOnRequestAndCombineWithAdditionalFields(): void
+    {
+        $this->http
+            ->answer(200, Fixtures::load('company-address'))
+            ->answer(200, Fixtures::load('company-address-expanded'))
+            ->answer(200, Fixtures::load('company-address-expanded'));
+        $addresses = $this->avaro()->company()->addresses();
+
+        self::assertNull($addresses->get('ExamplePlatform', 'c-1')->contacts, 'Not requested.');
+
+        $address = $addresses->get('ExamplePlatform', 'c-1', contacts: true);
+        self::assertSame('expand=contacts', $this->http->last()->getUri()->getQuery());
+        self::assertCount(2, $address->contacts ?? []);
+        [$erika, $max] = $address->contacts ?? [];
+        self::assertInstanceOf(AddressContact::class, $erika);
+        self::assertSame(['contact-public-7', 'Dr.', 'Erika', 'Muster', 'Geschäftsführung', 'Erika Muster'], [$erika->id, $erika->title, $erika->firstName, $erika->lastName, $erika->position, $erika->name()]);
+        self::assertSame('e.muster@muster-bau.example', $erika->email(), 'The primary email wins.');
+        self::assertSame('+49 170 1234567', $erika->phone(), 'Falls back to the mobile number.');
+        self::assertSame(['11', '12'], array_map(fn(AddressContactField $field) => $field->id, $erika->fieldsOfType(AddressContactField::EMAIL)));
+        self::assertSame(['business', false], [$erika->fields[0]->scope, $erika->fields[0]->primary]);
+        self::assertSame([null, 'Max', null, null, null, []], [$max->title, $max->name(), $max->email(), $max->phone(), $max->position, $max->fields]);
+
+        $addresses->get('ExamplePlatform', 'c-1', additionalFields: true, contacts: true);
+        self::assertSame('expand=additionalFields%2Ccontacts', $this->http->last()->getUri()->getQuery());
+    }
+
+    public function testAContactWithoutPrimaryFieldsUsesTheFirstFilledOne(): void
+    {
+        $contact = new AddressContact('c', null, null, 'Muster', null, [
+            new AddressContactField('1', AddressContactField::EMAIL, null, ''),
+            new AddressContactField('2', AddressContactField::EMAIL, null, 'a@example.test'),
+            new AddressContactField('3', AddressContactField::PHONE, null, '0441 1'),
+            new AddressContactField('4', AddressContactField::MOBILE, null, '0170 1', true),
+        ]);
+
+        self::assertSame(['Muster', 'a@example.test', '0441 1'], [$contact->name(), $contact->email(), $contact->phone()]);
     }
 
     public function testAdditionalFieldsAreDefinedSuggestedAndChanged(): void

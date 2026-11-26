@@ -21,7 +21,8 @@ use Avaro\Sdk\Todos\ExternalReference;
  * targetAccount is true or false for a company and null when it is not
  * specified or the address is no company; provision() never changes it, see
  * Addresses::setTargetAccount(). additionalFields is null unless they were
- * requested (Addresses::get(..., additionalFields: true)).
+ * requested (Addresses::get(..., additionalFields: true)); so are contacts,
+ * the contact persons from the CRM (Addresses::get(..., contacts: true)).
  */
 final class Address
 {
@@ -34,6 +35,7 @@ final class Address
     /**
      * @param list<ExternalReference>    $externalIds
      * @param list<AdditionalField>|null $additionalFields
+     * @param list<AddressContact>|null  $contacts
      */
     public function __construct(
         public readonly string $id,
@@ -53,6 +55,7 @@ final class Address
         public readonly bool $created = false,
         public readonly ?bool $targetAccount = null,
         public readonly ?array $additionalFields = null,
+        public readonly ?array $contacts = null,
     ) {}
 
     /** The additional field with this title, e.g. 'KAM-Fit'; null when absent or not requested. */
@@ -87,6 +90,7 @@ final class Address
             $created,
             self::optBool($data, 'targetAccount'),
             null === ($fields = $data->optList('additionalFields')) ? null : array_map(AdditionalField::fromData(...), $fields),
+            null === ($contacts = $data->optList('contacts')) ? null : array_map(AddressContact::fromData(...), $contacts),
         );
     }
 

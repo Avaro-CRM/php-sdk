@@ -19,13 +19,15 @@ use Avaro\Sdk\Http\Resource;
 final class Addresses extends Resource
 {
     /**
-     * With additionalFields, the address carries its additional fields (e.g. KAM-Fit).
+     * With additionalFields, the address carries its additional fields (e.g.
+     * KAM-Fit); with contacts, its contact persons from the CRM (both can be
+     * combined).
      *
      * @throws \Avaro\Sdk\Exception\NotFound
      */
-    public function get(string $system, string $externalId, bool $additionalFields = false): Address
+    public function get(string $system, string $externalId, bool $additionalFields = false, bool $contacts = false): Address
     {
-        return Address::fromData($this->transport->send('GET', self::path($system, $externalId), self::expand($additionalFields))->data());
+        return Address::fromData($this->transport->send('GET', self::path($system, $externalId), self::expand($additionalFields, $contacts))->data());
     }
 
     /**
@@ -100,9 +102,11 @@ final class Addresses extends Resource
     }
 
     /** @return array<string, string> */
-    private static function expand(bool $additionalFields): array
+    private static function expand(bool $additionalFields, bool $contacts = false): array
     {
-        return $additionalFields ? ['expand' => 'additionalFields'] : [];
+        $expand = array_keys(array_filter(['additionalFields' => $additionalFields, 'contacts' => $contacts]));
+
+        return [] === $expand ? [] : ['expand' => implode(',', $expand)];
     }
 
     private static function path(string $system, string $externalId): string

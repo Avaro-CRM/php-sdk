@@ -39,6 +39,46 @@
             "value": true
         }
     ],
+    "contacts": [
+        {
+            "id": "contact-public-7",
+            "title": "Dr.",
+            "firstName": "Erika",
+            "lastName": "Muster",
+            "position": "Geschäftsführung",
+            "fields": [
+                {
+                    "id": "11",
+                    "type": "email",
+                    "scope": "business",
+                    "value": "erika@muster-bau.example",
+                    "isPrimary": false
+                },
+                {
+                    "id": "12",
+                    "type": "email",
+                    "scope": "business",
+                    "value": "e.muster@muster-bau.example",
+                    "isPrimary": true
+                },
+                {
+                    "id": "13",
+                    "type": "mobile",
+                    "scope": null,
+                    "value": "+49 170 1234567",
+                    "isPrimary": true
+                }
+            ]
+        },
+        {
+            "id": "contact-public-8",
+            "title": null,
+            "firstName": "Max",
+            "lastName": null,
+            "position": null,
+            "fields": []
+        }
+    ],
     "status": "Active",
     "origin": "Provisioned",
     "externalIds": [
