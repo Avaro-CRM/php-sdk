@@ -6,6 +6,21 @@ version per version of the API.
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-11-28
+
+### Added
+
+- `company()->addresses()->provisionContact($system, $addressExternalId, $contactExternalId, ContactData)`
+  links or creates a contact person of a company by its ID in the
+  client's system: a known ID is answered as it is, `ContactData::link($contactId)`
+  links an existing contact person without changing it,
+  `ContactData::named($firstName, $lastName)` with `title()`, `email()`,
+  `phone()` and `mobile()` creates one. Conflicts carry the slugs
+  `contact-missing`, `contact-linked-elsewhere`, `address-deleted`,
+  `address-missing` and `busy`.
+- `Company\AddressContact::$externalId`: the contact's ID in the client's
+  own system, null without one (also in `get(..., contacts: true)`).
+
 ## [1.3.0] - 2026-11-26
 
 ### Added

@@ -14,6 +14,7 @@ use Avaro\Sdk\Company\AddressContactField;
 use Avaro\Sdk\Company\AddressChanges;
 use Avaro\Sdk\Company\Address;
 use Avaro\Sdk\Company\AddressData;
+use Avaro\Sdk\Company\ContactData;
 use Avaro\Sdk\Company\User;
 use Avaro\Sdk\Company\UserProfile;
 use Avaro\Sdk\Exception\Conflict;
@@ -155,6 +156,7 @@ final class CompanyTest extends TestCase
         self::assertSame(['11', '12'], array_map(fn(AddressContactField $field) => $field->id, $erika->fieldsOfType(AddressContactField::EMAIL)));
         self::assertSame(['business', false], [$erika->fields[0]->scope, $erika->fields[0]->primary]);
         self::assertSame([null, 'Max', null, null, null, []], [$max->title, $max->name(), $max->email(), $max->phone(), $max->position, $max->fields]);
+        self::assertSame(['01HXC0USER0000000000000000', null], [$erika->externalId, $max->externalId], 'The ID of the own system, null without one.');
 
         $addresses->get('ExamplePlatform', 'c-1', additionalFields: true, contacts: true);
         self::assertSame('expand=additionalFields%2Ccontacts', $this->http->last()->getUri()->getQuery());
@@ -210,6 +212,46 @@ final class CompanyTest extends TestCase
             self::fail('No exception.');
         } catch (Conflict $error) {
             self::assertSame('customer-number-ambiguous', $error->slug());
+        }
+    }
+
+    public function testAContactIsCreatedFromItsDataAndCarriesItsExternalId(): void
+    {
+        $this->http->answer(201, Fixtures::load('company-address-contact'));
+        $data = ContactData::named('Erika', 'Muster')->title('Dr.')->email('erika@muster-bau.example')->mobile('+49 170 1234567')->phone(null);
+
+        $contact = $this->avaro()->company()->addresses()->provisionContact('ExamplePlatform', '01HXB0COMPANY0000000000000', '01HXC0USER0000000000000000', $data);
+        self::assertSame(['PUT', 'https://app.avaro.test/rest/v3/company/addresses/by-external-id/ExamplePlatform/01HXB0COMPANY0000000000000/contacts/by-external-id/ExamplePlatform/01HXC0USER0000000000000000'],
+            [$this->http->last()->getMethod(), (string) $this->http->last()->getUri()]);
+        self::assertSame(['phone' => null, 'mobile' => '+49 170 1234567', 'email' => 'erika@muster-bau.example', 'title' => 'Dr.', 'firstName' => 'Erika', 'lastName' => 'Muster'], $this->http->lastJson());
+        self::assertSame(['01JCZ3W9Y8X7V6T5S4R3Q2P1N0', '01HXC0USER0000000000000000', 'Erika Muster', 'erika@muster-bau.example', '+49 170 1234567'],
+            [$contact->id, $contact->externalId, $contact->name(), $contact->email(), $contact->phone()]);
+    }
+
+    public function testAnExistingContactIsLinkedByItsIdOnly(): void
+    {
+        $this->http->answer(200, Fixtures::load('company-address-contact'));
+
+        $contact = $this->avaro()->company()->addresses()->provisionContact('ExamplePlatform', 'c-1', 'u/1', ContactData::link('01JCZ3W9Y8X7V6T5S4R3Q2P1N0'));
+        self::assertSame(['contactId' => '01JCZ3W9Y8X7V6T5S4R3Q2P1N0'], $this->http->lastJson());
+        self::assertStringEndsWith('/contacts/by-external-id/ExamplePlatform/u%2F1', $this->http->last()->getUri()->getPath());
+        self::assertSame('01HXC0USER0000000000000000', $contact->externalId);
+
+        $named = ContactData::named(null, 'Muster');
+        self::assertSame(['firstName' => null, 'lastName' => 'Muster'], $named->toArray());
+        self::assertSame(['email' => 'a@example.test', 'firstName' => null, 'lastName' => 'Muster'], $named->email('a@example.test')->toArray());
+        self::assertSame(['firstName' => null, 'lastName' => 'Muster'], $named->toArray(), 'Immutable.');
+    }
+
+    public function testAContactLinkedElsewhereIsRefused(): void
+    {
+        $this->http->answer(409, ['type' => 'https://app.avaro.test/rest/v3/problems/contact-linked-elsewhere', 'title' => 'Conflict', 'status' => 409]);
+
+        try {
+            $this->avaro()->company()->addresses()->provisionContact('ExamplePlatform', 'c-1', 'u-1', ContactData::link('01JCZ3W9Y8X7V6T5S4R3Q2P1N0'));
+            self::fail('No exception.');
+        } catch (Conflict $error) {
+            self::assertSame('contact-linked-elsewhere', $error->slug());
         }
     }
 }

@@ -302,6 +302,29 @@ foreach ($address->contacts ?? [] as $contact) {
 }
 ```
 
+Each contact carries `externalId`, its ID in the client's own system
+(null without one). `provisionContact()` links a contact person to such
+an ID or creates it: a known ID is answered as it is, `ContactData::link()`
+links an existing contact person of the company without changing it,
+`ContactData::named()` creates one (a name or an email is required; email,
+phone and mobile become primary fields).
+
+```php
+use Avaro\Sdk\Company\ContactData;
+use Avaro\Sdk\Exception\Conflict;
+
+$addresses = $avaro->company()->addresses();
+
+try {
+    $contact = $addresses->provisionContact('ExamplePlatform', $companyId, $platformUserId, ContactData::link($match->id));
+    $contact = $addresses->provisionContact('ExamplePlatform', $companyId, $otherUserId, ContactData::named('Erika', 'Muster')
+        ->email('erika@muster-bau.example')
+        ->mobile('+49 170 1234567'));
+} catch (Conflict $error) {
+    // contact-linked-elsewhere, contact-missing, address-deleted, address-missing or busy
+}
+```
+
 ### CRM activities
 
 With `crm.activities:read`/`crm.activities:write` the client reads the

@@ -14,7 +14,9 @@ use Avaro\Sdk\Model\Data;
  * A contact person of an address in the CRM; only with
  * Addresses::get(..., contacts: true). Only active contacts outside the
  * trash are listed. id is the public ID of the contact in Avaro; position is
- * the job position, e.g. Geschäftsführung.
+ * the job position, e.g. Geschäftsführung. externalId is the ID of the
+ * contact in the client's own system (see Addresses::provisionContact()),
+ * null when it has none; IDs of other systems are never shown.
  */
 final class AddressContact
 {
@@ -28,6 +30,7 @@ final class AddressContact
         public readonly ?string $lastName,
         public readonly ?string $position,
         public readonly array $fields = [],
+        public readonly ?string $externalId = null,
     ) {}
 
     /** First and last name, e.g. "Erika Muster"; the title is left out. Empty when neither is known. */
@@ -67,6 +70,7 @@ final class AddressContact
             $data->optString('lastName'),
             $data->optString('position'),
             array_map(AddressContactField::fromData(...), $data->optList('fields') ?? []),
+            $data->optString('externalId'),
         );
     }
 

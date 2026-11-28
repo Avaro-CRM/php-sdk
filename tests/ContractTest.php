@@ -57,6 +57,7 @@ final class ContractTest extends Base
         ['GET', '/company/addresses/by-external-id/{system}/{externalId}', 'company'],
         ['PUT', '/company/addresses/by-external-id/{system}/{externalId}', 'company'],
         ['PATCH', '/company/addresses/by-external-id/{system}/{externalId}', 'company'],
+        ['PUT', '/company/addresses/by-external-id/{system}/{externalId}/contacts/by-external-id/{contactSystem}/{contactExternalId}', 'company'],
         ['GET', '/company/address-fields', 'company'],
         ['GET', '/company/address-fields/{field}/tags', 'company'],
         ['GET', '/company/users/by-external-id/{system}/{externalId}', 'company'],
@@ -96,6 +97,7 @@ final class ContractTest extends Base
         'company-user' => 'company.yaml#/components/schemas/User',
         'company-address' => 'company.yaml#/components/schemas/Address',
         'company-address-expanded' => 'company.yaml#/components/schemas/Address',
+        'company-address-contact' => 'company.yaml#/components/schemas/AddressContact',
         'company-address-field' => 'company.yaml#/components/schemas/AddressFieldDefinition',
         'crm-activity' => 'crm.yaml#/components/schemas/Activity',
     ];

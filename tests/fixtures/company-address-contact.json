@@ -1,0 +1,24 @@
+{
+    "id": "01JCZ3W9Y8X7V6T5S4R3Q2P1N0",
+    "externalId": "01HXC0USER0000000000000000",
+    "title": "Dr.",
+    "firstName": "Erika",
+    "lastName": "Muster",
+    "position": null,
+    "fields": [
+        {
+            "id": "21",
+            "type": "email",
+            "scope": "work",
+            "value": "erika@muster-bau.example",
+            "isPrimary": true
+        },
+        {
+            "id": "22",
+            "type": "mobile",
+            "scope": "work",
+            "value": "+49 170 1234567",
+            "isPrimary": true
+        }
+    ]
+}

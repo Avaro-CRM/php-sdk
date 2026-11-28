@@ -15,6 +15,7 @@ use Avaro\Sdk\Http\Resource;
  * the ID, else links the one address with the customer number, else
  * creates a company; then writes the fields set. Calling it again changes
  * nothing more. Afterwards todos find the address by the same reference.
+ * provisionContact() does the same for the contact persons of a company.
  */
 final class Addresses extends Resource
 {
@@ -99,6 +100,30 @@ final class Addresses extends Resource
         $result = $this->transport->send('PUT', self::path($system, $externalId), json: $data->toArray());
 
         return Address::fromData($result->data(), 201 === $result->status);
+    }
+
+    /**
+     * Links or creates a contact person of a company by its ID in the
+     * client's system, e.g. a platform user: when the ID is known, the
+     * contact is answered as it is; ContactData::link() links an existing
+     * contact person of the company without changing it; ContactData::named()
+     * creates one with the client's Avaro user as creator. Calling it again
+     * changes nothing more. system must be the client's external system,
+     * for the company and the contact; the client needs company.addresses:write.
+     *
+     * @throws \Avaro\Sdk\Exception\Conflict         with slug contact-missing (the contact to link is no active contact of
+     *                                               the company outside the trash, or the contact of the ID no longer is),
+     *                                               contact-linked-elsewhere (it already has another ID of the system),
+     *                                               address-deleted, address-missing or busy (try again)
+     * @throws \Avaro\Sdk\Exception\Forbidden        with slug foreign-system, external-system-required, client-user-required or missing-scope
+     * @throws \Avaro\Sdk\Exception\NotFound         when the company has no such external ID
+     * @throws \Avaro\Sdk\Exception\ValidationFailed when a new contact has neither name nor email, or a value is invalid
+     */
+    public function provisionContact(string $system, string $addressExternalId, string $contactExternalId, ContactData $data): AddressContact
+    {
+        $path = self::path($system, $addressExternalId) . '/contacts/by-external-id/' . self::segment($system) . '/' . self::segment($contactExternalId);
+
+        return AddressContact::fromData($this->transport->send('PUT', $path, json: $data->toArray())->data());
     }
 
     /** @return array<string, string> */

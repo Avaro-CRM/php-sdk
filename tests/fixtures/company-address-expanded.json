@@ -42,6 +42,7 @@
     "contacts": [
         {
             "id": "contact-public-7",
+            "externalId": "01HXC0USER0000000000000000",
             "title": "Dr.",
             "firstName": "Erika",
             "lastName": "Muster",
@@ -72,6 +73,7 @@
         },
         {
             "id": "contact-public-8",
+            "externalId": null,
             "title": null,
             "firstName": "Max",
             "lastName": null,
